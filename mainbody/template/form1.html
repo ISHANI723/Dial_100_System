@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,10 +15,10 @@
 </head>
 
 <body>
-    <div class="  bg-success ">
+    <div class="bg-success ">
         <div class="row ">
             <div class="col-md-3 text-center ">
-                <img src=" .\static\100system.png"  width = "70" height = "45" >
+                <img src="{% static '100system.png' %}"  width = "70" height = "45" >
              </div>
             <div class="col-md-6 ">
                 <h2>Dial 100 System , Madhya Pradesh</h2>
@@ -62,12 +62,12 @@
                         <div class="form-group col-6">
                             <label for="Incident_Type">Incident Type </label>
                             <select class="form-control" name='Incident_Type' id="Incident_Type" required>
-                                <option>1. Accident</option>
-                                <option>2. kidnapping</option>
-                                <option>3. fire</option>
-                                <option>4. Robbery</option>
-                                <option>5. Health problem</option>
-                                <option>6. other </option>
+                                <option value="accident">Accident</option>
+                                <option value="kidnapping">Kidnapping</option>
+                                <option value="fire">Fire</option>
+                                <option value="robbery">Robbery</option>
+                                <option value="health">Health Problem</option>
+                                <option value="others">Others</option>
                             </select>
                         </div>
                         <div class="form-group col-8" id='calldes-div'>

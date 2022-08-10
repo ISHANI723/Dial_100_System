@@ -10,4 +10,5 @@ class form1Detail(models.Model):
     Division=models.CharField(max_length=500)
     District=models.CharField(max_length=500)
     Incident_Address=models.TextField(max_length=500)
+    frv_req=models.CharField(max_length=100)
     date = models.DateField()

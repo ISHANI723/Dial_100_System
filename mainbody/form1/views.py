@@ -2,7 +2,14 @@ from django.shortcuts import render
 from datetime import datetime
 from .models import form1Detail
 
-
+FRV={
+    'accident': 'Ambulance, Police',
+    'fire': 'Fire Bridage, Ambulance, Police',
+    'robbery': 'Police',
+    'kidnapping': 'Police',
+    'health': 'Amblance',
+    'others': '',
+}
 # Create your views here.
 
 def index(request):
@@ -17,6 +24,7 @@ def index(request):
             post.District = request.POST.get('District')
             post.Incident_Address = request.POST.get('Incident_Address')
             post.date = datetime.today()
+            post.frv_req = FRV[request.POST.get('Incident_Type')]
             #newEntruy = form1Detail(Dialer_Name=Dialer_Name, Dialer_Address=Dialer_Address,
             #  #                       Describe_call=Describe_call,Incident_Type=Incident_Type,
             #                         Phone_Number=Phone_Number, Division=Division,
@@ -27,4 +35,4 @@ def index(request):
 
 def form2(request):
     datas=form1Detail.objects.all()
-    return render(request,'form2.html',{'datas':datas})
+    return render(request,'supervisor.html',{'datas':datas[::-1]})
