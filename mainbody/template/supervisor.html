@@ -18,7 +18,30 @@
 
 <body>
 
-    <h2 class="text-center bg-success">Dial 100 System , Madhya Pradesh</h2>
+    <div class="bg-success ">
+        <div class="row ">
+            <div class="col-md-3 text-center ">
+                <img src="{% static '100system.png' %}" width="70" height="45">
+            </div>
+            <div class="col-md-6 ">
+                <h2>Dial 100 System , Madhya Pradesh</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+            <button type="button" class="close" data-dismiss="alert" onclick="this.parentElement.style.display = 'none';" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="container-fluid">
 
         <style>
@@ -63,7 +86,7 @@
                                 <li class="list-group-item bg-light">
                                     <a class="btn btn-info">Assign FRV</a>
                                     <a class="btn btn-warning">Call Dialer</a>
-                                    <a class="btn btn-primary">Mark As Done</a>
+                                    <a class="btn btn-primary" href="/movetohistory/{{data.id}}">Mark As Done</a>
                                 </li>
                                 <li class="list-group-item bg-light">Description: {{data.Describe_call}}</li>
                                 <li class="list-group-item bg-light">Name: {{data.Dialer_Name}}</li>
@@ -77,13 +100,15 @@
 
                     <!-- Operations -->
                     <div class="tab-pane fade" id="nav-operations" role="tabpanel" aria-labelledby="nav-operations-tab">
+
+                        {% for data in complaints %}
                         <div class="card border-dark bg-light mb-3">
                             <div class="card-header">Incident Type 6</div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-light">
-                                    <a class="btn btn-success">Mark as Done</a>
-                                    <a class="btn btn-primary">Call FRV</a>
+                                    <a class="btn btn-success" href="/movetohistory/{{data.id}}">Mark as Done</a>
                                     <a class="btn btn-warning">Call Dialer</a>
+                                    <a class="btn btn-info">Assign More FRV</a>
                                 </li>
                                 <li class="list-group-item bg-light">Description: </li>
                                 <li class="list-group-item bg-light">Name: </li>
@@ -105,76 +130,22 @@
                                 </li>
                             </ul>
                         </div>
+                        {% endfor %}
 
-                        <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Incident Type 7</div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-light">
-                                    <a class="btn btn-success">Mark as Done</a>
-                                    <a class="btn btn-primary">Call FRV</a>
-                                    <a class="btn btn-warning">Call Dialer</a>
-                                </li>
-                                <li class="list-group-item bg-light">Description: </li>
-                                <li class="list-group-item bg-light">Name: </li>
-                                <li class="list-group-item bg-light">Mobile No.: </li>
-                                <li class="list-group-item bg-light">Address: </li>
-                                <li class="list-group-item bg-light dropup">
-                                    <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
-                                    <ul class="dropdown-menu border-dark bg-light" aria-labelledby="frvDropdownMenu">
-                                        <li>
-                                            <h6 class="dropdown-header">Info</h6>
-                                        </li>
-                                        <li><span class="dropdown-item-text">Name:</span></li>
-                                        <li><span class="dropdown-item-text">Mobile No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle Type:</span></li>
-                                        <li><a class="dropdown-item" href="#">Dashcam</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Incident Type 8</div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-light">
-                                    <a class="btn btn-success">Mark as Done</a>
-                                    <a class="btn btn-primary">Call FRV</a>
-                                    <a class="btn btn-warning">Call Dialer</a>
-                                </li>
-                                <li class="list-group-item bg-light">Description: </li>
-                                <li class="list-group-item bg-light">Name: </li>
-                                <li class="list-group-item bg-light">Mobile No.: </li>
-                                <li class="list-group-item bg-light">Address: </li>
-                                <li class="list-group-item bg-light dropup">
-                                    <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
-                                    <ul class="dropdown-menu border-dark bg-light" aria-labelledby="frvDropdownMenu">
-                                        <li>
-                                            <h6 class="dropdown-header">Info</h6>
-                                        </li>
-                                        <li><span class="dropdown-item-text">Name:</span></li>
-                                        <li><span class="dropdown-item-text">Mobile No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle Type:</span></li>
-                                        <li><a class="dropdown-item" href="#">Dashcam</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
+                    <!-- End Operations -->
 
                     <!-- History -->
                     <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
 
+                        {% for data in history %}
                         <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Incident Type 9</div>
+                            <div class="card-header">Call id-{{data.id}}: - {{data.Incident_Type}}</div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-light">Description: </li>
-                                <li class="list-group-item bg-light">Name: </li>
-                                <li class="list-group-item bg-light">Mobile No.: </li>
-                                <li class="list-group-item bg-light">Address: </li>
+                                <li class="list-group-item bg-light">Description: {{data.Describe_call}}</li>
+                                <li class="list-group-item bg-light">Name: {{data.Dialer_Name}}</li>
+                                <li class="list-group-item bg-light">Mobile No.: {{data.Phone_Number}}</li>
+                                <li class="list-group-item bg-light">Address: {{data.Dialer_Address}}</li>
                                 <li class="list-group-item bg-light dropup">
                                     <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
@@ -190,31 +161,12 @@
                                 </li>
                             </ul>
                         </div>
+                        {% endfor %}
 
-                        <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Incident Type 10</div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-light">Description: </li>
-                                <li class="list-group-item bg-light">Name: </li>
-                                <li class="list-group-item bg-light">Mobile No.: </li>
-                                <li class="list-group-item bg-light">Address: </li>
-                                <li class="list-group-item bg-light dropup">
-                                    <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
-                                    <ul class="dropdown-menu border-dark bg-light" aria-labelledby="frvDropdownMenu">
-                                        <li>
-                                            <h6 class="dropdown-header">Info</h6>
-                                        </li>
-                                        <li><span class="dropdown-item-text">Name:</span></li>
-                                        <li><span class="dropdown-item-text">Mobile No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle Type:</span></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
+                    <!-- End History -->
                 </div>
+                <!-- End Incident Report -->
 
             </div>
             <script>
@@ -250,7 +202,7 @@
     </div>
     <script src="{% static 'js/maps.js' %}"></script>
     <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+        src="https://maps.googleapis.com/maps/api/js?callback=initMap&v=weekly"
         defer></script>
 </body>
 
