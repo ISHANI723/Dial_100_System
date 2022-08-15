@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from datetime import datetime
 from .models import form1Detail, Operations, History, FRV
-
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth import login ,logout
 FRV_suggestion = {
     'accident': 'Ambulance, Police',
     'fire': 'Fire Bridage, Ambulance, Police',
@@ -13,7 +14,8 @@ FRV_suggestion = {
 }
 # Create your views here.
 
-
+global user
+user='none'
 def index(request):
     if request.method == 'POST':
         post = form1Detail()
@@ -32,7 +34,7 @@ def index(request):
         messages.success(request, "Details Saved Successfully.",
                          extra_tags='alert alert-success alert-dismissible fade show')
     
-    return render(request, 'form1.html')
+    return render(request, 'form1.html',{'user':user})
 
 
 def form2(request):
@@ -40,7 +42,7 @@ def form2(request):
     operations = Operations.objects.all()
     history = History.objects.all()
 
-    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1]})
+    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1],'user':user})
 
 
 def move_to_history(request, case_id):
@@ -93,7 +95,103 @@ def create_frv(request):
 
 
 FRV_TYPES = ['ambulance', 'police_car', 'fire_brigade' ]
-
 def list_frvs(request, frv_type, case_id):
     case= get_object_or_404(form1Detail, id=case_id)
     frvs= FRV.objects.filter(FRV_Type=frv_type).values()
+
+
+
+def driver(request):
+    # to find startind and endig locarion from database
+    coordinates = {
+
+        'Ohio Hospital':
+            {
+                'lat': 22.578305383029246, 'lng': 88.47703737631674}
+
+        ,
+        'Bhagirathi Neotia Woman and Child Care Centre':
+            {
+                'lat': 22.58007151014703, 'lng': 88.47554810340063}
+        ,
+        'New Town Police Station':
+            {
+                'lat': 22.579454581993136, 'lng': 88.4789031781252}
+
+        ,
+        'Technocity Police Station':
+            {
+                'lat': 22.564871517979633, 'lng': 88.51563870949663}
+
+        ,
+        'Newtown - Rajarhat Fire Station':
+            {
+                'lat': 22.579783567356824, 'lng': 88.45847724147374}
+
+        ,
+        'Fire Brigade Sector 5':
+            {
+                'lat': 22.56926551832623, 'lng': 88.43222217838807}
+
+    }
+    global user
+    user=str(user)
+    user = user.replace("_", " ")
+    lat=coordinates[user]['lat']
+    lng=coordinates[user]['lng']
+
+    return render(request,'driver.html',{'user':user,'lat':lat,'lng':lng})
+
+
+
+def home(request):
+    return render(request,'home.html')
+
+
+
+
+def signup_view(request):
+    global user
+    if request.method =='POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            #log user in
+            login(request, user)
+            return render(request,'menu.html',{"user":user})
+    else:
+        form=UserCreationForm()
+    return render(request,'signup.html',{"form":form})
+
+
+def login_view(request):
+    global user
+    if request.method == 'POST':
+        form=AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            #log in
+            user=form.get_user()
+            login(request,user)
+            return render(request,'menu.html',{"user":user})
+    else:
+        form=AuthenticationForm()
+    return render(request,'login.html',{'form':form})
+
+
+
+
+
+def logout_view(request):
+    if request.method=='POST':
+        logout(request)
+        return render(request,"login.html")
+
+
+
+
+
+
+
+
+def menu_view(request):
+    return render(request,'menu.html')

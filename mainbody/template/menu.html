@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{user}}
+<a href="form1">form1</a>
+<a href="form2">form2</a>
+<a href="driver">driver</a>
+<form method="post" action="logout">
+    {%csrf_token%}
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
