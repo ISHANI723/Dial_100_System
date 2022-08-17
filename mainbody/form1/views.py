@@ -13,9 +13,15 @@ FRV_suggestion = {
     'others': '',
 }
 # Create your views here.
-
+#following are predefind user login  each have password test@123
 global user
 user='none'
+
+global form1array
+form1array=['prajwal','hritvik1','bang1','bhate1','ishani1','ritik1']
+global form2array
+form2array=['hritvik','bang2','bhate2','ishani2','ritik2','prajwal2']
+#following are predefind user login
 def index(request):
     if request.method == 'POST':
         post = form1Detail()
@@ -103,6 +109,7 @@ def list_frvs(request, frv_type, case_id):
 
 def driver(request):
     # to find startind and endig locarion from database
+
     coordinates = {
 
         'Ohio Hospital':
@@ -133,7 +140,7 @@ def driver(request):
             {
                 'lat': 22.56926551832623, 'lng': 88.43222217838807}
 
-    }
+          }
     global user
     user=str(user)
     user = user.replace("_", " ")
@@ -172,7 +179,17 @@ def login_view(request):
             #log in
             user=form.get_user()
             login(request,user)
-            return render(request,'menu.html',{"user":user})
+            user=str(user)
+            if user in form1array:
+                return  redirect(index)
+            elif 'form1' in user or 'operator' in user:
+                return redirect(index)
+            elif user in form2array:
+                return  redirect(form2)
+            elif 'form2' in user or 'supervisor' in user:
+                return redirect(form2)
+            else:
+                return redirect(driver)
     else:
         form=AuthenticationForm()
     return render(request,'login.html',{'form':form})

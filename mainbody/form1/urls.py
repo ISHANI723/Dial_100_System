@@ -5,7 +5,7 @@ from form1 import views
 urlpatterns = [
     path('form1', views.index,name='index'),
     path('form2', views.form2, name='Supervisor'),
-    path('home', views.home, name='home'),
+    path('', views.login_view, name='home'),
     path('signup', views.signup_view, name='signup'),
     path('menu', views.menu_view, name='menu'),
     path('login', views.login_view, name='login'),
