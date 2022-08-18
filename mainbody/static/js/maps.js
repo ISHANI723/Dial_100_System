@@ -25,10 +25,6 @@ const coordinates = {
             { lat: 22.579578854540397, lng: 88.47585006802154 }
         ],
         [
-            'Dantist',
-            { lat: 22.577320986494573, lng: 88.45769557818424 }
-        ],
-        [
             'Ujjiiban Multi Specialty Hospital',
             { lat: 22.585290002394924, lng: 88.47216790724714 }
         ],
@@ -37,16 +33,8 @@ const coordinates = {
             { lat: 22.62605292992326, lng: 88.47810676570283 }
         ],
         [
-            'eHospitals',
-            { lat: 22.621124498442178, lng: 88.46488592064279 }
-        ],
-        [
             'Belle Vue Hospital',
             { lat: 22.583829204305538, lng: 88.49280502294074 }
-        ],
-        [
-            'Disha Eye Hospital',
-            { lat: 22.58014963898107, lng: 88.47521815482696 }
         ],
         [
             'Patharghata Primary Health Center',
@@ -101,29 +89,9 @@ const coordinates = {
             { lat: 22.572379017209656, lng: 88.4128174015032 }
         ],
         [
-            'Dr. Singh Eye Hospital',
-            { lat: 22.58089764521321, lng: 88.44651207268774 }
-        ],
-        [
-            'Bhattacharyya Orthopaedics & Related Research Centre (P) Ltd.',
-            { lat: 22.639583504753997, lng: 88.46558623045976 }
-        ],
-        [
             'Parkview Super Speciality Hospital',
             { lat: 22.57523935651491, lng: 88.4172371725103 }
-        ],
-        [
-            'Speed Age Hospital',
-            { lat: 22.6093330146927, lng: 88.40140935886507 }
-        ],
-        [
-            'Sankara Jyoti Eye Institute New Town',
-            { lat: 22.623078532848478, lng: 88.45448236959608 }
-        ],
-        [
-            'NETRAM EYE HOSPITAL',
-            { lat: 22.644895159965106, lng: 88.46241072459428 }
-        ],
+        ]
         [
             'Bhagirathi Neotia Woman and Child Care Centre',
             { lat: 22.54775761354874, lng: 88.35943218142147 }
@@ -133,16 +101,8 @@ const coordinates = {
             { lat: 22.568462465960224, lng: 88.50275444577035 }
         ],
         [
-            'Renaissance Hospital Pvt Ltd',
-            { lat: 22.625317884466316, lng: 88.43352491727684 }
-        ],
-        [
             'Spandan Hospital',
             { lat: 22.62073899950217, lng: 88.43288204790757 }
-        ],
-        [
-            'ALO Eye Care',
-            { lat: 22.5801570247769, lng: 88.47596575173516 }
         ],
         [
             'Daffodil Hospital (Multi-speciality Hospital)',
@@ -159,10 +119,6 @@ const coordinates = {
         [
             'Fortis Hospital',
             { lat: 22.52211021458458, lng: 88.40085607249912 }
-        ],
-        [
-            'Disha Eye Hospital Teghoria',
-            { lat: 22.621365916375925, lng: 88.43284031279666 }
         ],
         [
             'Apollo Multispeciality Hospitals',

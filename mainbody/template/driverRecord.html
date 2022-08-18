@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>record</title>
+</head>
+<body>
+<p>The queryset object:</p>
+
+{{ driver_ll }}
+<p>user:{{user}}</p>
+<p>Loop through the items:</p>
+
+<table border='1'>
+  <tr>
+    <th>LONGITUDE</th>
+    <th>LATITUDE</th>
+  </tr>
+  {% for x in driver_ll %}
+    <tr>
+      <td>{{ x.lat }}</td>
+        <td>{{ x.lng }}</td>
+    </tr>
+  {% endfor %}
+</table>
+<h2>ending location</h2>
+<table border='1'>
+  <tr>
+    <th>LONGITUDE</th>
+    <th>LATITUDE</th>
+  </tr>
+  {% for x in driver_ll %}
+    <tr>
+      <td>{{ x.end_lat }}</td>
+        <td>{{ x.end_lng }}</td>
+    </tr>
+  {% endfor %}
+</table>
+</body>
+</html>

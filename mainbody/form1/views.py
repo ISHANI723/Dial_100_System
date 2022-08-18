@@ -109,45 +109,49 @@ def list_frvs(request, frv_type, case_id):
 
 def driver(request):
     # to find startind and endig locarion from database
-
-    coordinates = {
-
-        'Ohio Hospital':
-            {
-                'lat': 22.578305383029246, 'lng': 88.47703737631674}
-
-        ,
-        'Bhagirathi Neotia Woman and Child Care Centre':
-            {
-                'lat': 22.58007151014703, 'lng': 88.47554810340063}
-        ,
-        'New Town Police Station':
-            {
-                'lat': 22.579454581993136, 'lng': 88.4789031781252}
-
-        ,
-        'Technocity Police Station':
-            {
-                'lat': 22.564871517979633, 'lng': 88.51563870949663}
-
-        ,
-        'Newtown - Rajarhat Fire Station':
-            {
-                'lat': 22.579783567356824, 'lng': 88.45847724147374}
-
-        ,
-        'Fire Brigade Sector 5':
-            {
-                'lat': 22.56926551832623, 'lng': 88.43222217838807}
-
-          }
+    #
+    # coordinates = {
+    #
+    #     'Ohio Hospital':
+    #         {
+    #             'lat': 22.578305383029246, 'lng': 88.47703737631674}
+    #
+    #     ,
+    #     'Bhagirathi Neotia Woman and Child Care Centre':
+    #         {
+    #             'lat': 22.58007151014703, 'lng': 88.47554810340063}
+    #     ,
+    #     'New Town Police Station':
+    #         {
+    #             'lat': 22.579454581993136, 'lng': 88.4789031781252}
+    #
+    #     ,
+    #     'Technocity Police Station':
+    #         {
+    #             'lat': 22.564871517979633, 'lng': 88.51563870949663}
+    #
+    #     ,
+    #     'Newtown - Rajarhat Fire Station':
+    #         {
+    #             'lat': 22.579783567356824, 'lng': 88.45847724147374}
+    #
+    #     ,
+    #     'Fire Brigade Sector 5':
+    #         {
+    #             'lat': 22.56926551832623, 'lng': 88.43222217838807}
+    #
+    #       }
     global user
     user=str(user)
-    user = user.replace("_", " ")
-    lat=coordinates[user]['lat']
-    lng=coordinates[user]['lng']
+    driver_ll=FRV.objects.filter(Driver_Name=user)
 
-    return render(request,'driver.html',{'user':user,'lat':lat,'lng':lng})
+    user = user.replace("_", " ")
+    # following 2 line may not work as we may may have many cases assign to single frv
+    # lat=driver_ll.Lat
+    # lng=driver_ll.Lng
+
+    return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
+    return render(request,'driver.html',{'user':user,'driver_ll':driver_ll})
 
 
 
@@ -196,19 +200,12 @@ def login_view(request):
 
 
 
-
-
 def logout_view(request):
     if request.method=='POST':
         logout(request)
         return render(request,"login.html")
 
 
-
-
-
-
-
-
 def menu_view(request):
     return render(request,'menu.html')
+
