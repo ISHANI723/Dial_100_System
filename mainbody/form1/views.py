@@ -16,11 +16,17 @@ FRV_suggestion = {
 #following are predefind user login  each have password test@123
 global user
 user='none'
-
+global Elat
+global Elng
 global form1array
 form1array=['prajwal','hritvik1','bang1','bhate1','ishani1','ritik1']
 global form2array
 form2array=['hritvik','bang2','bhate2','ishani2','ritik2','prajwal2']
+
+global Elat_list
+Elat_list=[]
+global Elng_list
+Elng_list=[]
 #following are predefind user login
 def index(request):
     if request.method == 'POST':
@@ -109,49 +115,40 @@ def list_frvs(request, frv_type, case_id):
 
 def driver(request):
     # to find startind and endig locarion from database
-    #
-    # coordinates = {
-    #
-    #     'Ohio Hospital':
-    #         {
-    #             'lat': 22.578305383029246, 'lng': 88.47703737631674}
-    #
-    #     ,
-    #     'Bhagirathi Neotia Woman and Child Care Centre':
-    #         {
-    #             'lat': 22.58007151014703, 'lng': 88.47554810340063}
-    #     ,
-    #     'New Town Police Station':
-    #         {
-    #             'lat': 22.579454581993136, 'lng': 88.4789031781252}
-    #
-    #     ,
-    #     'Technocity Police Station':
-    #         {
-    #             'lat': 22.564871517979633, 'lng': 88.51563870949663}
-    #
-    #     ,
-    #     'Newtown - Rajarhat Fire Station':
-    #         {
-    #             'lat': 22.579783567356824, 'lng': 88.45847724147374}
-    #
-    #     ,
-    #     'Fire Brigade Sector 5':
-    #         {
-    #             'lat': 22.56926551832623, 'lng': 88.43222217838807}
-    #
-    #       }
+
     global user
     user=str(user)
     driver_ll=FRV.objects.filter(Driver_Name=user)
-
+    global Slat
+    global Slng
+    global type
+    global Elat
+    global Elng
+    global Elat_list
+    global Elng_list
     user = user.replace("_", " ")
     # following 2 line may not work as we may may have many cases assign to single frv
-    # lat=driver_ll.Lat
-    # lng=driver_ll.Lng
+    for s in driver_ll:
+        Slat=s.lat
+        Slng=s.lng
+        type =s.FRV_Type
+    for x in driver_ll:
+        Elat_list.append(x.end_lat)
+        Elng_list.append(x.end_lng)
+        # Elat = x.end_lat
+        # Elng = x.end_lng
+        # print(Elat_list)
+        # print(Elng_list)
+    if request.method=="POST":
+        ite=request.POST.get("i")
+        ite=int(ite)-1
+        print(ite)
+        Elat = Elat_list[ite]
+        Elng = Elng_list[ite]
 
-    return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
-    return render(request,'driver.html',{'user':user,'driver_ll':driver_ll})
+        return render(request, 'driver.html', {'user': user, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type})
+    else:
+        return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
 
 
 

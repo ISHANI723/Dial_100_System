@@ -1,40 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
-    <title>record</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<style>
+.content {
+  max-width: 500px;
+  margin: auto;
+}
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+</style>-
+<!--<script>-->
+<!--//can use following link to get address from lng and lat-->
+<!--   //  https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=API_KEY -->
+<!--</script>-->
+    <title>driver record</title>
 </head>
-<body>
-<p>The queryset object:</p>
 
-{{ driver_ll }}
-<p>user:{{user}}</p>
-<p>Loop through the items:</p>
+<body >
+    <div class="bg-success ">
+        <div class="row ">
+            <div class="col-md-3 text-center ">
+                <img src="{% static '100system.png' %}" width="70" height="45">
+            </div>
+            <div class="col-md-6 ">
+                <h2>Dial 100 System , Madhya Pradesh</h2>
+            </div>
+        </div>
 
-<table border='1'>
+    </div>
+    <h2 class="text-center p-4"> User Name:{{user}}</h2>
+<div class="content row">
+<div class="border p-4 border-dark row">
+    <h3><u>Starting point</u></h3>
+<table class="styled-table  text-center" border='1'>
   <tr>
-    <th>LONGITUDE</th>
+
+    <th height="50px">LONGITUDE</th>
     <th>LATITUDE</th>
   </tr>
-  {% for x in driver_ll %}
+  {% for x in driver_ll|slice:":1" %}
     <tr>
+
       <td>{{ x.lat }}</td>
         <td>{{ x.lng }}</td>
     </tr>
   {% endfor %}
 </table>
-<h2>ending location</h2>
-<table border='1'>
-  <tr>
-    <th>LONGITUDE</th>
+    </div>
+    <div class="border p-4 border-dark row">
+<h3><u>Ending location</u></h3>
+<table class="styled-table  text-center" border='1'>
+  <tr><th>s.no.</th>
+    <th height="50px">LONGITUDE</th>
     <th>LATITUDE</th>
   </tr>
   {% for x in driver_ll %}
     <tr>
+        <td>{{forloop.counter}}</td>
       <td>{{ x.end_lat }}</td>
         <td>{{ x.end_lng }}</td>
     </tr>
   {% endfor %}
 </table>
+        </div>
+<form method="post" >
+     {% csrf_token %}
+    <p>enter s.no.  to select end location other than 1st</p>
+        <input name="i"/>
+    <p>currently this is not working driver map oly takes the latest end lnt and lng </p>
+    <button class="btn" type="submit">Submit</button>
+</form>
+ </div>
 </body>
 </html>
