@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
 from datetime import datetime
-from .models import form1Detail, Operations, History, FRV
-from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from django.contrib.auth import login ,logout
+from .models import form1Detail, Operations, History, FRV, FRV_Assigned
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
+
 FRV_suggestion = {
     'accident': 'Ambulance, Police',
     'fire': 'Fire Bridage, Ambulance, Police',
@@ -12,22 +14,15 @@ FRV_suggestion = {
     'health': 'Amblance',
     'others': '',
 }
-# Create your views here.
+
 #following are predefind user login  each have password test@123
-global user
 user='none'
-global Elat
-global Elng
-global form1array
 form1array=['prajwal','hritvik1','bang1','bhate1','ishani1','ritik1']
-global form2array
 form2array=['hritvik','bang2','bhate2','ishani2','ritik2','prajwal2']
 
-global Elat_list
 Elat_list=[]
-global Elng_list
 Elng_list=[]
-#following are predefind user login
+
 def index(request):
     if request.method == 'POST':
         post = form1Detail()
@@ -45,8 +40,8 @@ def index(request):
         post.save()
         messages.success(request, "Details Saved Successfully.",
                          extra_tags='alert alert-success alert-dismissible fade show')
-    
-    return render(request, 'form1.html',{'user':user})
+
+    return render(request, 'form1.html', {'user': user})
 
 
 def form2(request):
@@ -54,7 +49,7 @@ def form2(request):
     operations = Operations.objects.all()
     history = History.objects.all()
 
-    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1],'user':user})
+    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1], 'user': user})
 
 
 def move_to_history(request, case_id):
@@ -89,36 +84,104 @@ def move_to_history(request, case_id):
 
     return redirect('/form2')
 
+
 def create_frv(request):
     if request.method == 'POST':
-        frv=FRV()
+        frv = FRV()
         frv.FRV_Type = request.POST.get("frv_type")
-        frv.FRV_Plate_No = request.POST.get("plate_no")
         frv.Driver_Name = request.POST.get("name")
-        frv.Driver_Number = request.POST.get("phone_no")
         frv.lat = request.POST.get("lat")
         frv.lng = request.POST.get("lng")
         frv.save()
 
         messages.success(request, "FRV Details Saved Successfully.",
                          extra_tags='alert alert-success alert-dismissible fade show')
-    
+
     return render(request, 'add_frv.html')
 
 
-FRV_TYPES = ['ambulance', 'police_car', 'fire_brigade' ]
-def list_frvs(request, frv_type, case_id):
-    case= get_object_or_404(form1Detail, id=case_id)
-    frvs= FRV.objects.filter(FRV_Type=frv_type).values()
+def get_case_location(request):
+    if request.method == 'GET':
+        case_id = request.GET.get('case_id')
+        try:
+            case = form1Detail.objects.get(id=case_id)
+        except:
+            case = Operations(id=case_id)
+
+        if case.lat and case.lng:
+            return JsonResponse({'status': 'OK', 'case_id':case_id, 'location': {'lat': case.lat, 'lng': case.lng}})
+        else:
+            return JsonResponse({'status': 'LOCATION_NOT_SET', 'case_id':case_id})
+
+
+def set_case_location(request):
+    if request.method == 'POST':
+        case_id = request.POST.get('case_id')
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        try:
+            case = form1Detail.objects.get(id=case_id)
+        except:
+            case = Operations(id=case_id)
+
+        case.lat = lat
+        case.lng = lng
+        case.save()
+
+        return JsonResponse({'status': 'OK'})
+
+def assign_frv(request):
+    if request.method == 'POST':
+        case_id = request.POST.get('case_id')
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        frv_name=request.POST.get('frv_name')
+        frv = FRV.objects.get(Driver_Name=frv_name.replace(" ", "_"))            
+        frv_assign=FRV_Assigned()
+        frv_assign.FRV_Type = frv.FRV_Type
+        frv_assign.Driver_Name = frv.Driver_Name
+        frv_assign.lat=frv.lat
+        frv_assign.lng=frv.lng
+        frv_assign.case_id=case_id
+        frv_assign.end_lat=lat
+        frv_assign.end_lng=lng
+        frv_assign.save()
+        try:
+            try:
+                case = form1Detail.objects.get(id=case_id)
+                operations = Operations()
+                operations.id = case.id
+                operations.Dialer_Name = case.Dialer_Name
+                operations.Dialer_Address = case.Dialer_Address
+                operations.Describe_call = case.Describe_call
+                operations.Incident_Type = case.Incident_Type
+                operations.Phone_Number = case.Phone_Number
+                operations.Division = case.Division
+                operations.District = case.District
+                operations.Incident_Address = case.Incident_Address
+                operations.date = case.date
+                operations.lat=case.lat
+                operations.lng=case.lng
+
+                operations.save()
+                operations.frvs.add(frv)
+                case.delete()
+            except:
+                operations = Operations.objects.get(id=case_id)
+                operations.frvs.add(frv)
+            finally:
+                return JsonResponse({'status': 'OK'})
+        except Exception as e:
+            return JsonResponse({'status': e})
 
 
 
 def driver(request):
-    # to find startind and endig locarion from database
+    # to find starting and ending location from database
 
     global user
     user=str(user)
-    driver_ll=FRV.objects.filter(Driver_Name=user)
+    driver_ll=FRV_Assigned.objects.filter(Driver_Name=user)
     global Slat
     global Slng
     global type
@@ -127,18 +190,14 @@ def driver(request):
     global Elat_list
     global Elng_list
     user = user.replace("_", " ")
-    # following 2 line may not work as we may may have many cases assign to single frv
+
     for s in driver_ll:
         Slat=s.lat
         Slng=s.lng
         type =s.FRV_Type
-    for x in driver_ll:
-        Elat_list.append(x.end_lat)
-        Elng_list.append(x.end_lng)
-        # Elat = x.end_lat
-        # Elng = x.end_lng
-        # print(Elat_list)
-        # print(Elng_list)
+        Elat_list.append(s.end_lat)
+        Elng_list.append(s.end_lng)
+
     if request.method=="POST":
         ite=request.POST.get("i")
         ite=int(ite)-1
@@ -151,31 +210,28 @@ def driver(request):
         return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
 
 
-
 def home(request):
-    return render(request,'home.html')
-
-
+    return render(request, 'home.html')
 
 
 def signup_view(request):
     global user
-    if request.method =='POST':
+    if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user=form.save()
-            #log user in
+            user = form.save()
+            # log user in
             login(request, user)
-            return render(request,'menu.html',{"user":user})
+            return render(request, 'menu.html', {"user": user})
     else:
-        form=UserCreationForm()
-    return render(request,'signup.html',{"form":form})
+        form = UserCreationForm()
+    return render(request, 'signup.html', {"form": form})
 
 
 def login_view(request):
     global user
     if request.method == 'POST':
-        form=AuthenticationForm(data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             #log in
             user=form.get_user()
@@ -196,13 +252,11 @@ def login_view(request):
     return render(request,'login.html',{'form':form})
 
 
-
 def logout_view(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         logout(request)
         return render(request,"login.html")
 
 
 def menu_view(request):
     return render(request,'menu.html')
-

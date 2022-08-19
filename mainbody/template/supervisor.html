@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
+{% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,7 +35,8 @@
     <div class="messages">
         {% for message in messages %}
         <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
-            <button type="button" class="close" data-dismiss="alert" onclick="this.parentElement.style.display = 'none';" aria-label="Close">
+            <button type="button" class="close" data-dismiss="alert"
+                onclick="this.parentElement.style.display = 'none';" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -80,19 +82,37 @@
                     <div class="tab-pane fade show active" id="nav-complaints" role="tabpanel"
                         aria-labelledby="nav-complaints-tab">
                         {% for data in datas%}
-                        <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Call No-{{data.id}} : {{data.Incident_Type}}</div>
+                        <div class="card border-dark bg-light mb-3" case_id="{{data.id}}">
+                            <div class="card-header">
+                                <span>Call No-{{data.id}} : {{data.Incident_Type}}</span>
+                                <button type="button" id="ShowOnMap_{{data.id}}" case_id="{{data.id}}"
+                                    lat="{{data.lat}}" lng="{{data.lng}}" address="{{data.Incident_Address}}"
+                                    class="btn btn-primary float-end" data-bs-toggle="modal"
+                                    data-bs-target="#setIncidentLocation">
+                                    Show on Map
+                                </button>
+                            </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-light">
-                                    <a class="btn btn-info">Assign FRV</a>
                                     <a class="btn btn-warning">Call Dialer</a>
-                                    <a class="btn btn-primary" href="/movetohistory/{{data.id}}">Mark As Done</a>
+                                    <a class="btn btn-success" href="/movetohistory/{{data.id}}">Mark As Done</a>
                                 </li>
                                 <li class="list-group-item bg-light">Description: {{data.Describe_call}}</li>
                                 <li class="list-group-item bg-light">Name: {{data.Dialer_Name}}</li>
                                 <li class="list-group-item bg-light">Mobile No.: {{data.Phone_Number}}</li>
-                                <li class="list-group-item bg-light">Address: {{data.Dialer_Address}}</li>
-                                <li class="list-group-item bg-light">FRV Required: {{data.frv_req}}</li>
+                                <li class="list-group-item bg-light">Address: {{data.Incident_Address}}</li>
+                                <li class="list-group-item bg-light">FRV Suggested: {{data.frv_req}}</li>
+                                <li class="list-group-item bg-light">
+                                    <p><small class="text-muted">Assign FRV</small></p>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'hospital')">Ambulance</button>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'policeStation')">Police
+                                        Car</button>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'fireStation')">Fire
+                                        Brigade</button>
+                                </li>
                             </ul>
                         </div>
                         {% endfor %}
@@ -101,19 +121,37 @@
                     <!-- Operations -->
                     <div class="tab-pane fade" id="nav-operations" role="tabpanel" aria-labelledby="nav-operations-tab">
 
-                        {% for data in complaints %}
-                        <div class="card border-dark bg-light mb-3">
-                            <div class="card-header">Incident Type 6</div>
+                        {% for data in operations %}
+                        <div class="card border-dark bg-light mb-3" case_id="{{data.id}}">
+                            <div class="card-header">
+                                <span>Call No-{{data.id}} : {{data.Incident_Type}}</span>
+                                <button type="button" id="ShowOnMap_{{data.id}}" case_id="{{data.id}}"
+                                    lat="{{data.lat}}" lng="{{data.lng}}" address="{{data.Incident_Address}}"
+                                    class="btn btn-primary float-end">
+                                    Show on Map
+                                </button>
+                            </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-light">
-                                    <a class="btn btn-success" href="/movetohistory/{{data.id}}">Mark as Done</a>
                                     <a class="btn btn-warning">Call Dialer</a>
-                                    <a class="btn btn-info">Assign More FRV</a>
+                                    <a class="btn btn-success" href="/movetohistory/{{data.id}}">Mark as Done</a>
                                 </li>
-                                <li class="list-group-item bg-light">Description: </li>
-                                <li class="list-group-item bg-light">Name: </li>
-                                <li class="list-group-item bg-light">Mobile No.: </li>
-                                <li class="list-group-item bg-light">Address: </li>
+                                <li class="list-group-item bg-light">
+                                    <p><small class="text-muted">Assign More FRVs</small></p>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'hospital')">Ambulance</button>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'policeStation')">Police
+                                        Car</button>
+                                    <button class="btn btn-info"
+                                        onclick="distanceMatrix(this, '{{data.id}}', 'fireStation')">Fire
+                                        Brigade</button>
+                                </li>
+                                <li class="list-group-item bg-light">Description: {{data.Describe_call}}</li>
+                                <li class="list-group-item bg-light">Name: {{data.Dialer_Name}}</li>
+                                <li class="list-group-item bg-light">Mobile No.: {{data.Phone_Number}}</li>
+                                <li class="list-group-item bg-light">Address: {{data.Incident_Address}}</li>
+                                <li class="list-group-item bg-light">Location: {{data.lat}},{{data.lng}}</li>
                                 <li class="list-group-item bg-light dropup">
                                     <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
@@ -121,11 +159,15 @@
                                         <li>
                                             <h6 class="dropdown-header">Info</h6>
                                         </li>
-                                        <li><span class="dropdown-item-text">Name:</span></li>
-                                        <li><span class="dropdown-item-text">Mobile No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle Type:</span></li>
-                                        <li><a class="dropdown-item" href="#">Dashcam</a></li>
+                                        {% for frv in data.frvs.all %}
+                                        <li class="dropdown-item-text">
+                                            <ul class="list-group">
+                                                <li><span class="list-group-item">Name: {{frv.Driver_Name}}</span></li>
+                                                <li><span class="list-group-item">Vehicle Type: {{frv.FRV_Type}}</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        {% endfor %}
                                     </ul>
                                 </li>
                             </ul>
@@ -139,13 +181,13 @@
                     <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
 
                         {% for data in history %}
-                        <div class="card border-dark bg-light mb-3">
+                        <div class="card border-dark bg-light mb-3" case_id="{{data.id}}">
                             <div class="card-header">Call id-{{data.id}}: - {{data.Incident_Type}}</div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-light">Description: {{data.Describe_call}}</li>
                                 <li class="list-group-item bg-light">Name: {{data.Dialer_Name}}</li>
                                 <li class="list-group-item bg-light">Mobile No.: {{data.Phone_Number}}</li>
-                                <li class="list-group-item bg-light">Address: {{data.Dialer_Address}}</li>
+                                <li class="list-group-item bg-light">Address: {{data.Incident_Address}}</li>
                                 <li class="list-group-item bg-light dropup">
                                     <a class="nav-link dropdown-toggle" href="#" id="frvDropdownMenu" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">FRV Appointed</a>
@@ -153,10 +195,15 @@
                                         <li>
                                             <h6 class="dropdown-header">Info</h6>
                                         </li>
-                                        <li><span class="dropdown-item-text">Name:</span></li>
-                                        <li><span class="dropdown-item-text">Mobile No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle No.:</span></li>
-                                        <li><span class="dropdown-item-text">Vehicle Type:</span></li>
+                                        {% for frv in data.frvs.all %}
+                                        <li class="dropdown-item-text">
+                                            <ul class="list-group">
+                                                <li><span class="list-group-item">Name: {{frv.Driver_Name}}</span></li>
+                                                <li><span class="list-group-item">Vehicle Type: {{frv.FRV_Type}}</span>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        {% endfor %}
                                     </ul>
                                 </li>
                             </ul>
@@ -169,6 +216,45 @@
                 <!-- End Incident Report -->
 
             </div>
+
+
+            <!-- Button trigger modal -->
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#setIncidentLocation">
+                Launch static backdrop modal
+            </button> -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="setIncidentLocation" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="setIncidentLocationLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center" id="setIncidentLocationLabel">Select a location from below list or drag the marker to the incident location</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-4" style="height:63vh; overflow-y: auto">
+                                        <p><strong>Select a location from the list</strong></p>
+                                        <div id="gecodedMapLocations"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Or drag the marker to the incident location</strong></p>
+                                        <div id="caseLocationMap" style="height:60vh; width:100vh"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                id="SetLocationBtn">Set Location</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <script>
                 $('.nav-tabs a').click(function (event) {
                     event.preventDefault()
@@ -180,17 +266,17 @@
                     <button class="btn btn-primary">Map</button>
                 </div>
                 <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="hospital"
+                    <input class="form-check-input" type="checkbox" role="switch" id="hospitalToggle"
                         onclick="hideMarker(this, 'hospital')" checked>
                     <label class="form-check-label" for="hospital">Hospital</label>
                 </div>
                 <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="policeStation"
-                        onclick="hideMarker(this, 'policeStation')" checked>
+                    <input class="form-check-input" type="checkbox" role="switch" id="policeStationToggle"
+                        onclick="hideMarker(this, 'poli90vhceStation')" checked>
                     <label class="form-check-label" for="policeStation">Police Station</label>
                 </div>
                 <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="fireStation"
+                    <input class="form-check-input" type="checkbox" role="switch" id="fireStationToggle"
                         onclick="hideMarker(this, 'fireStation')" checked>
                     <label class="form-check-label" for="fireStation">Fire Station</label>
                 </div>

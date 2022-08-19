@@ -12,16 +12,25 @@ class form1Detail(models.Model):
     Incident_Address=models.TextField(max_length=500)
     frv_req=models.CharField(max_length=100)
     date = models.DateField()
+    lat=models.CharField(max_length=50, default='')
+    lng=models.CharField(max_length=50, default='')
 
 class FRV(models.Model):
     FRV_Type=models.CharField(max_length=20)
-    #FRV_Plate_No=models.CharField(max_length=10)
     Driver_Name=models.CharField(max_length=100)
-    #Driver_Number=models.CharField(max_length=20)
-    lat=models.CharField(max_length=50)
-    lng=models.CharField(max_length=50)
-    end_lat=models.CharField(max_length=50)
-    end_lng=models.CharField(max_length=50)
+    lat=models.CharField(max_length=50, default='')
+    lng=models.CharField(max_length=50, default='')
+
+class FRV_Assigned(models.Model):
+    FRV_Type=models.CharField(max_length=20)
+    Driver_Name=models.CharField(max_length=100)
+    lat=models.CharField(max_length=50, default='')
+    lng=models.CharField(max_length=50, default='')
+    case_id=models.CharField(max_length=50)
+    end_lat=models.CharField(max_length=50, default='')
+    end_lng=models.CharField(max_length=50, default='')
+    status=models.CharField(max_length=50, default='assigned')
+    waypoints=models.TextField(max_length=1000, default='')
 
 class Operations(models.Model):
     id=models.BigIntegerField(primary_key=True)
@@ -35,6 +44,8 @@ class Operations(models.Model):
     Incident_Address=models.TextField(max_length=500)
     frvs=models.ManyToManyField(FRV, blank=True)
     date = models.DateField()
+    lat=models.CharField(max_length=50, default='')
+    lng=models.CharField(max_length=50, default='')
 
 class History(models.Model):
     id=models.BigIntegerField(primary_key=True)
@@ -48,13 +59,5 @@ class History(models.Model):
     Incident_Address=models.TextField(max_length=500)
     frvs=models.ManyToManyField(FRV, blank=True)
     date = models.DateField()
-
-# class Cases(models.Model):
-#     Driver_Name = models.CharField(max_length=300)
-#     Dialer_Start_lng = models.TextField(max_length=500)
-#     Dialer_Start_lat = models.TextField(max_length=500)
-#     Dialer_end_lng = models.TextField(max_length=500)
-#     Dialer_end_lat = models.TextField(max_length=500)
-
-
-
+    lat=models.CharField(max_length=50, default='')
+    lng=models.CharField(max_length=50, default='')
