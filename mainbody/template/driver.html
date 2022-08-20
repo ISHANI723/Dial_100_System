@@ -53,7 +53,7 @@ $(document).ready(function(){
     <div>
         <div class="row">
                 <div class="col  ">
-                        <img src="{% static 'logofull.png' %}" width="40%" height="55">
+                        <img src="{% static 'images/logofull.png' %}" width="40%" height="55">
                  </div>
 
         </div>
@@ -128,8 +128,8 @@ $(document).ready(function(){
 <!--  <button class="btn px-4 col " type="button">  </button>-->
     </div>
     <div class="text-center">
-<button type="button" id="show" class="btn "><img width="100" height="70" src="{% static 'message icon png.png' %}" alt="notification" height ="80" width="100" /></button>
-<button type="button" class="btn "><img width="70" height="70" src="{% static 'call png.png' %}"></button>
+<button type="button" id="show" class="btn "><img width="100" height="70" src="{% static 'images/message icon png.png' %}" alt="notification" height ="80" width="100" /></button>
+<button type="button" class="btn "><img width="70" height="70" src="{% static 'images/call png.png' %}"></button>
 <button type="button" class="btn "><img width="70" height="70" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR5Aq8gjzRXEsydudvrRcgL3UQEUdplQc_1A&usqp=CAU"></button>
 <button type="button" class="btn "><img width="70" height="70"  src="https://thumbs.dreamstime.com/b/car-cam-icon-outline-style-car-cam-icon-outline-car-cam-vector-icon-web-design-isolated-white-background-154616656.jpg"></button>
 <button type="button" class="btn "><img width="70" height="70"  src="data:image/png;base64,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"></button>

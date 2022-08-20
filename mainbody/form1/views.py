@@ -136,7 +136,7 @@ def assign_frv(request):
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         frv_name=request.POST.get('frv_name')
-        frv = FRV.objects.get(Driver_Name=frv_name.replace(" ", "_"))            
+        frv = FRV.objects.filter(Driver_Name=frv_name.replace(" ", "_"))[0]
         frv_assign=FRV_Assigned()
         frv_assign.FRV_Type = frv.FRV_Type
         frv_assign.Driver_Name = frv.Driver_Name
