@@ -3794,6 +3794,7 @@ function setVisibilityOfAll(visibility, arr, label = '') {
 // Removes the markers from the map, but keeps them in the array.
 function hideMarker(element, type) {
     setVisibilityOfAll(element.checked, markers['kolkata'][type]);
+    setVisibilityOfAll(element.checked, markers['bhopal'][type]);
 }
 
 function changeCheckboxValue(elementId, value) {
