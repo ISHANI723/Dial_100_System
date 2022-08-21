@@ -5,6 +5,15 @@ from datetime import datetime
 from .models import form1Detail, Operations, History, FRV, FRV_Assigned
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
+import os
+try:
+    MAPS_API_KEY = os.environ['MAPS_API_KEY']
+except KeyError:
+    print("MAPS_API_KEY is not set")
+    exit()
 
 FRV_suggestion = {
     'accident': 'Ambulance, Police',
@@ -49,7 +58,7 @@ def form2(request):
     operations = Operations.objects.all()
     history = History.objects.all()
 
-    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1], 'user': user})
+    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1], 'user': user, 'MAPS_API_KEY':MAPS_API_KEY })
 
 
 def move_to_history(request, case_id):
@@ -214,7 +223,7 @@ def driver(request):
         user = user.replace(" ", "_")
         x=FRV_Assigned.objects.filter(Driver_Name=user)
         x.filter(end_lat=Elat).update(status='assigned')
-        return render(request,'driver.html', {'user': user,'ite':ite, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type})
+        return render(request,'driver.html', {'user': user,'ite':ite, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type, 'MAPS_API_KEY':MAPS_API_KEY})
     else:
         return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
 

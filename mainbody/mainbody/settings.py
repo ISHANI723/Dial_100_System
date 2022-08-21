@@ -25,9 +25,11 @@ SECRET_KEY = 'django-insecure-4%_u=dk0id4o7f3m=7#l37h2pg+lvp581ps-6w9@d7ddry3ld6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['quantumgis.herokuapp.com', '127.0.0.1']
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://quantumgis.herokuapp.com'
+]
 # Application definition
 
 INSTALLED_APPS = [
