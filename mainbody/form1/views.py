@@ -201,6 +201,12 @@ def driver(request):
         Elng_list.append(s.end_lng)
 
     if request.method=="POST":
+        ends=request.POST.get('status')
+        if ends=='end':
+            user = user.replace(" ", "_")
+            x = FRV_Assigned.objects.filter(Driver_Name=user)
+            x.filter(end_lat=Elat).update(status='ended')
+            return render(request, 'driverRecord.html', {'user': user, 'driver_ll': driver_ll})
         ite=request.POST.get("i")
         ite = int(ite) - 1
         Elat = Elat_list[ite]

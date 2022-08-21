@@ -46,8 +46,13 @@ $(document).ready(function(){
         <div class="row">
                 <div class="col  ">
                         <img src="{% static 'images/logofull.png' %}" width="40%" height="55">
-                 </div>
 
+                 </div>
+ <form method="post" class="col">
+{% csrf_token %}
+
+ <button name="status" id="status" value="end" type="submit"  class="btn"><img height="50" width="50" class="plus" id='start' onclick=changeImg()   src="https://thumbs.dreamstime.com/b/rejected-button-8933160.jpg"></button>
+</form>
         </div>
     </div>
 
@@ -115,27 +120,10 @@ $(document).ready(function(){
 
     </div>
     <div class="text-center">
-<!--<<<<<<< Updated upstream-->
-<!--<button type="button" id="show" class="btn "><img width="100" height="70" src="{% static 'images/message icon png.png' %}" alt="notification" height ="80" width="100" /></button>-->
-<!--<button type="button" class="btn "><img width="70" height="70" src="{% static 'images/call png.png' %}"></button>-->
-<!--=======-->
-<!--<a href="#"><div  class="plus"></div></a>-->
 
-            <button name="status" id="status"  type="button"  class="btn"><img height="70" class="plus" id='start' onclick=changeImg() width="70"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnre4XJO8JWhnxqAC6hckFn8EuhWAb1FaJMA&usqp=CAU"></button>
 
-            <script>
-var toggle = true;
-function changeImg() {
-    if (toggle === true) {
-        document.getElementById('start').src  = 'https://thumbs.dreamstime.com/b/rejected-button-8933160.jpg';
-    } else {
-       document.getElementById('start').src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnre4XJO8JWhnxqAC6hckFn8EuhWAb1FaJMA&usqp=CAU';
-    }
-    toggle = !toggle;
-}
-</script>
 <button type="button" id="show" class="btn "><img width="100" height="70" src="{% static 'images/message icon png.png' %}" alt="notification" height ="80" width="100" /></button>
-<button type="button" class="btn "><img width="70" height="70" src="{% static 'images/call png.png' %}"></button>
+<button type="button" class="btn  "><img width="70" height="70" src="{% static 'images/call png.png' %}"></button>
 
 <button type="button" class="btn "><img width="70" height="70" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR5Aq8gjzRXEsydudvrRcgL3UQEUdplQc_1A&usqp=CAU"></button>
 <button type="button" class="btn "><img width="70" height="70"  src="https://thumbs.dreamstime.com/b/car-cam-icon-outline-style-car-cam-icon-outline-car-cam-vector-icon-web-design-isolated-white-background-154616656.jpg"></button>
