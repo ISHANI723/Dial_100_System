@@ -12,6 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+      <script>
+          function change(value){
+          document.getElementById("select").value= value;
+          }
+
+       </script>
 <style>
 .content {
   max-width: 500px;
@@ -78,7 +84,7 @@
   </tr>
   {% for x in driver_ll %}
     <tr>
-        <td>{{forloop.counter}}</td>
+        <td> <input type="button" onclick="change({{forloop.counter}})" value="{{forloop.counter}}"></td>
       <td>{{ x.end_lat }}</td>
         <td>{{ x.end_lng }}</td>
     </tr>
@@ -87,8 +93,8 @@
         </div>
 <form method="post" >
      {% csrf_token %}
-    <p>enter s.no.  to select end location other than 1st</p>
-        <input name="i"/>
+
+        <input id='select' name="i"/>
     <p>currently this is not working driver map oly takes the latest end lnt and lng </p>
     <button class="btn" type="submit">Submit</button>
 </form>

@@ -189,6 +189,8 @@ def driver(request):
     global Elng
     global Elat_list
     global Elng_list
+    global  status
+    status='not started'
     user = user.replace("_", " ")
 
     for s in driver_ll:
@@ -200,15 +202,15 @@ def driver(request):
 
     if request.method=="POST":
         ite=request.POST.get("i")
-        ite=int(ite)-1
-        print(ite)
+        ite = int(ite) - 1
         Elat = Elat_list[ite]
         Elng = Elng_list[ite]
-
-        return render(request, 'driver.html', {'user': user, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type})
+        user = user.replace(" ", "_")
+        x=FRV_Assigned.objects.filter(Driver_Name=user)
+        x.filter(end_lat=Elat).update(status='assigned')
+        return render(request,'driver.html', {'user': user,'ite':ite, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type})
     else:
         return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
-
 
 def home(request):
     return render(request, 'home.html')

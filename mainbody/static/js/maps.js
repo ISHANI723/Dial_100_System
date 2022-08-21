@@ -3945,7 +3945,7 @@ $("button[id^='ShowOnMap']").each(function () {
 })
 
 
-// Helper function to make ajax calls
+// Helper function to make calls
 function ajaxCall(url, type, data, success, error = null) {
     $.ajax(
         {
