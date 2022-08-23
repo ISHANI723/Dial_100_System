@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
@@ -8,7 +9,6 @@ from django.contrib.auth import login, logout
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
-import os
 try:
     MAPS_API_KEY = os.environ['MAPS_API_KEY']
 except KeyError:
@@ -24,25 +24,28 @@ FRV_suggestion = {
     'others': '',
 }
 
-#following are predefind user login  each have password test@123
-user='none'
-form1array=['prajwal','hritvik1','bang1','bhate1','ishani1','ritik1']
-form2array=['hritvik','bang2','bhate2','ishani2','ritik2','prajwal2']
+# following are predefind user login  each have password test@123
+user = 'none'
+form1array = ['prajwal', 'hritvik1', 'bang1', 'bhate1', 'ishani1', 'ritik1']
+form2array = ['hritvik', 'bang2', 'bhate2', 'ishani2', 'ritik2', 'prajwal2']
 
-Elat_list=[]
-Elng_list=[]
+Elat_list = []
+Elng_list = []
+
 
 def index(request):
     if request.method == 'POST':
         post = form1Detail()
         post.Dialer_Name = request.POST.get('Dialer_Name')
-        post.Dialer_Address = request.POST.get('Dialer_Address')
         post.Describe_call = request.POST.get('Describe_call')
         post.Incident_Type = request.POST.get('Incident_Type')
         post.Phone_Number = request.POST.get('Phone_Number')
-        post.Division = request.POST.get('Division')
         post.District = request.POST.get('District')
         post.Incident_Address = request.POST.get('Incident_Address')
+        post.Pin_Code = request.POST.get('Pin_Code')
+        post.City = request.POST.get('City')
+        post.State = request.POST.get('State')
+        post.Country = request.POST.get('Country')
         post.date = datetime.today()
         post.frv_req = FRV_suggestion[request.POST.get('Incident_Type')]
 
@@ -50,7 +53,7 @@ def index(request):
         messages.success(request, "Details Saved Successfully.",
                          extra_tags='alert alert-success alert-dismissible fade show')
 
-    return render(request, 'form1.html', {'user': user})
+    return render(request, 'form1.html', {'user': user, 'MAPS_API_KEY': MAPS_API_KEY})
 
 
 def form2(request):
@@ -58,7 +61,7 @@ def form2(request):
     operations = Operations.objects.all()
     history = History.objects.all()
 
-    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1], 'user': user, 'MAPS_API_KEY':MAPS_API_KEY })
+    return render(request, 'supervisor.html', {'datas': datas[::-1], 'operations': operations[::-1], 'history': history[::-1], 'user': user, 'MAPS_API_KEY': MAPS_API_KEY})
 
 
 def move_to_history(request, case_id):
@@ -69,11 +72,13 @@ def move_to_history(request, case_id):
     history = History()
     history.id = case.id
     history.Dialer_Name = case.Dialer_Name
-    history.Dialer_Address = case.Dialer_Address
     history.Describe_call = case.Describe_call
     history.Incident_Type = case.Incident_Type
     history.Phone_Number = case.Phone_Number
-    history.Division = case.Division
+    history.City = case.City
+    history.State = case.State
+    history.Country = case.Country
+    history.Pin_Code = case.Pin_Code
     history.District = case.District
     history.Incident_Address = case.Incident_Address
     history.date = case.date
@@ -118,9 +123,9 @@ def get_case_location(request):
             case = Operations(id=case_id)
 
         if case.lat and case.lng:
-            return JsonResponse({'status': 'OK', 'case_id':case_id, 'location': {'lat': case.lat, 'lng': case.lng}})
+            return JsonResponse({'status': 'OK', 'case_id': case_id, 'location': {'lat': case.lat, 'lng': case.lng}})
         else:
-            return JsonResponse({'status': 'LOCATION_NOT_SET', 'case_id':case_id})
+            return JsonResponse({'status': 'LOCATION_NOT_SET', 'case_id': case_id})
 
 
 def set_case_location(request):
@@ -139,21 +144,22 @@ def set_case_location(request):
 
         return JsonResponse({'status': 'OK'})
 
+
 def assign_frv(request):
     if request.method == 'POST':
         case_id = request.POST.get('case_id')
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        frv_name=request.POST.get('frv_name')
+        frv_name = request.POST.get('frv_name')
         frv = FRV.objects.filter(Driver_Name=frv_name.replace(" ", "_"))[0]
-        frv_assign=FRV_Assigned()
+        frv_assign = FRV_Assigned()
         frv_assign.FRV_Type = frv.FRV_Type
         frv_assign.Driver_Name = frv.Driver_Name
-        frv_assign.lat=frv.lat
-        frv_assign.lng=frv.lng
-        frv_assign.case_id=case_id
-        frv_assign.end_lat=lat
-        frv_assign.end_lng=lng
+        frv_assign.lat = frv.lat
+        frv_assign.lng = frv.lng
+        frv_assign.case_id = case_id
+        frv_assign.end_lat = lat
+        frv_assign.end_lng = lng
         frv_assign.save()
         try:
             try:
@@ -161,16 +167,18 @@ def assign_frv(request):
                 operations = Operations()
                 operations.id = case.id
                 operations.Dialer_Name = case.Dialer_Name
-                operations.Dialer_Address = case.Dialer_Address
                 operations.Describe_call = case.Describe_call
                 operations.Incident_Type = case.Incident_Type
                 operations.Phone_Number = case.Phone_Number
-                operations.Division = case.Division
+                operations.City = case.City
+                operations.State = case.State
+                operations.Country = case.Country
+                operations.Pin_Code = case.Pin_Code
                 operations.District = case.District
                 operations.Incident_Address = case.Incident_Address
                 operations.date = case.date
-                operations.lat=case.lat
-                operations.lng=case.lng
+                operations.lat = case.lat
+                operations.lng = case.lng
 
                 operations.save()
                 operations.frvs.add(frv)
@@ -184,13 +192,12 @@ def assign_frv(request):
             return JsonResponse({'status': e})
 
 
-
 def driver(request):
     # to find starting and ending location from database
 
     global user
-    user=str(user)
-    driver_ll=FRV_Assigned.objects.filter(Driver_Name=user)
+    user = str(user)
+    driver_ll = FRV_Assigned.objects.filter(Driver_Name=user)
     global Slat
     global Slng
     global type
@@ -198,34 +205,35 @@ def driver(request):
     global Elng
     global Elat_list
     global Elng_list
-    global  status
-    status='not started'
+    global status
+    status = 'not started'
     user = user.replace("_", " ")
 
     for s in driver_ll:
-        Slat=s.lat
-        Slng=s.lng
-        type =s.FRV_Type
+        Slat = s.lat
+        Slng = s.lng
+        type = s.FRV_Type
         Elat_list.append(s.end_lat)
         Elng_list.append(s.end_lng)
 
-    if request.method=="POST":
-        ends=request.POST.get('status')
-        if ends=='end':
+    if request.method == "POST":
+        ends = request.POST.get('status')
+        if ends == 'end':
             user = user.replace(" ", "_")
             x = FRV_Assigned.objects.filter(Driver_Name=user)
             x.filter(end_lat=Elat).update(status='ended')
             return render(request, 'driverRecord.html', {'user': user, 'driver_ll': driver_ll})
-        ite=request.POST.get("i")
+        ite = request.POST.get("i")
         ite = int(ite) - 1
         Elat = Elat_list[ite]
         Elng = Elng_list[ite]
         user = user.replace(" ", "_")
-        x=FRV_Assigned.objects.filter(Driver_Name=user)
+        x = FRV_Assigned.objects.filter(Driver_Name=user)
         x.filter(end_lat=Elat).update(status='assigned')
-        return render(request,'driver.html', {'user': user,'ite':ite, 'Slat':Slat,"Slng":Slng, 'Elat':Elat,"Elng":Elng,'type':type, 'MAPS_API_KEY':MAPS_API_KEY})
+        return render(request, 'driver.html', {'user': user, 'ite': ite, 'Slat': Slat, "Slng": Slng, 'Elat': Elat, "Elng": Elng, 'type': type, 'MAPS_API_KEY': MAPS_API_KEY})
     else:
-        return render(request,'driverRecord.html',{'user':user,'driver_ll':driver_ll})
+        return render(request, 'driverRecord.html', {'user': user, 'driver_ll': driver_ll})
+
 
 def home(request):
     return render(request, 'home.html')
@@ -250,30 +258,30 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            #log in
-            user=form.get_user()
-            login(request,user)
-            user=str(user)
+            # log in
+            user = form.get_user()
+            login(request, user)
+            user = str(user)
             if user in form1array:
-                return  redirect(index)
+                return redirect(index)
             elif 'form1' in user or 'operator' in user:
                 return redirect(index)
             elif user in form2array:
-                return  redirect(form2)
+                return redirect(form2)
             elif 'form2' in user or 'supervisor' in user:
                 return redirect(form2)
             else:
                 return redirect(driver)
     else:
-        form=AuthenticationForm()
-    return render(request,'login.html',{'form':form})
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
 
 
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return render(request,"login.html")
+        return render(request, "login.html")
 
 
 def menu_view(request):
-    return render(request,'menu.html')
+    return render(request, 'menu.html')

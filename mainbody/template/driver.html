@@ -67,13 +67,12 @@ $(document).ready(function(){
 //followind code is  to map
     function myfunction(){
         var station_name='{{user}}'
-        var start_lat=parseFloat({{Slat}})
-        var start_lng=parseFloat({{Slng}})
+        var start_lat=parseFloat('{{Slat}}')
+        var start_lng=parseFloat('{{Slng}}')
         //var Elat=19.0760
-        var Elat=parseFloat({{Elat}})
-        console.log(Elat)
+        var Elat=parseFloat('{{Elat}}')
         //var Elng=72.8777
-        var Elng=parseFloat({{Elng}})
+        var Elng=parseFloat('{{Elng}}')
         //console.log(Elng)
         var map;
         var start = new google.maps.LatLng(start_lat,start_lng);

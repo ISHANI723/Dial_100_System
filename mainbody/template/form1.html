@@ -17,8 +17,8 @@
 </head>
 
 <body>
-    <div class="bg-success ">
-        <div class="row ">
+    <div class="container-fluid">
+        <div class="row bg-success ">
             <div class="col-md-3 text-center ">
                 <img src="{% static 'images/100system.png' %}" width="70" height="45">
             </div>
@@ -26,187 +26,197 @@
                 <h2>Dial 100 System , Madhya Pradesh</h2>
             </div>
         </div>
-
     </div>
-
-    <!-- Popup -->
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
-            <button type="button" class="close" onclick="this.parentElement.style.display = 'none';" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    <div class="container">
+        <!-- Popup -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                <button type="button" class="close" onclick="this.parentElement.style.display = 'none';"
+                    data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+        {% endif %}
 
-    <form action=" " method="POST">
-        {% csrf_token %}
-        <div class="row p-5  ">
-            <div class="col-md ">
-                <div class="form-group col-8">
-                    <h1>Contact details</h1>
-                    <p>USER ID:- XXXXXXXX</p>
-                    <p>USER NAME:- {{user}}</p>
-                    <div class="row form-group col-8">
-                        <p>Date and Time:- <span id="dateTime"></span></p>
-                        <script>
-                            function time() {
-                                d = new Date();
-                                document.getElementById('dateTime').innerHTML = `${d.toLocaleDateString('en-US')} ${d.toLocaleTimeString()}`;
-                            }
-                            time();
-                            window.setInterval(time, 1000);
-                        </script>
-                    </div>
-
-
-                </div>
-                <div class="form-group col-8" id="name-div">
-                    <label>Dialer Name:-</label>
-                    <input type="text" class="form-control" name='Dialer_Name' id="Dialer_Name" required>
-                </div>
-                <div class="form-group col-8" id="address-div">
-                    <label>Dialer Address:-</label>
-                    <input type="text" name='Dialer_Address' class="form-control" id="Dialer_Address" required>
-                </div>
-
-                <div class="form-group col-6">
-                    <label for="Incident_Type">Incident Type </label>
-                    <select class="form-control" name='Incident_Type' id="Incident_Type" required>
-                        <option selected disabled>Select incident Type</option>
-                        <option value="accident">Accident</option>
-                        <option value="kidnapping">Kidnapping</option>
-                        <option value="fire">Fire</option>
-                        <option value="robbery">Robbery</option>
-                        <option value="health">Health Problem</option>
-                        <option value="others">Others</option>
-                    </select>
-                </div>
-                <div class="form-group col-8" id='calldes-div'>
-                    <label>Describe call :-</label>
-                    <textarea type="text" class="form-control" name='Describe_call' id="Describe_call" rows="3"
-                        cols="30" placeholder="Describe call here"></textarea>
-                </div>
-
-
-
-                <div>
-                    <button type="submit" class="form-group col-7 btn btn-primary">Next</button>
-                </div>
-
+        <div class="row p-2  ">
+            <div class="col-12 text-center">
+                <h1>Contact details</h1>
             </div>
 
-
-
-
+            <div class="col-md ">
+                <p>USER ID:- XXXXXXXX | USER NAME:- {{user}}</p>
+            </div>
             <div class="col-md">
+                <p>Date and Time:- <span id="dateTime"></span></p>
+                <script>
+                    function time() {
+                        d = new Date();
+                        document.getElementById('dateTime').innerHTML = `${d.toLocaleDateString('en-US')} ${d.toLocaleTimeString()}`;
+                    }
+                    time();
+                    window.setInterval(time, 1000);
+                </script>
+            </div>
+        </div>
 
-                <div class="form-group col-6" id="phone-div">
-                    <label for="Phone_Number">Phone Number-</label>
-                    <input type="text" name="Phone_Number" class="form-control" id="Phone_Number" required>
-                </div>
-                <div class="form-group col-6" id='adress-div'>
-                    <label for="Incident_Address">Incident Address :-</label>
-                    <input type="text" class="form-control" id="Incident_Address" name='Incident_Address' />
-                    <div class="form-group ">
-                        <label for="Division">Division</label>
-                        <select class="form-control" id="Division" name="Division" required>
-                            <option selected disabled> Select Division</option>
-                            <option> Chambal division</option>
-                            <option> Gwalior division</option>
-                            <option> Bhopal division</option>
-                            <option> Ujjain division</option>
-                            <option> Indore division</option>
-                            <option> Narmadapuram division</option>
-                            <option> Sagar division</option>
-                            <option> Rewa division</option>
-                            <option> Shahdol division</option>
-                            <option> Jabalpur division</option>
-                            </option>
-                        </select>
+
+        <form action=" " method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md">
+                    <div class="form-group" id="name-div">
+                        <label>Dialer Name:-</label>
+                        <input type="text" class="form-control" name='Dialer_Name' id="Dialer_Name">
                     </div>
-                    <div class="form-group ">
-                        <label for="District">District </label>
-                        <select class="form-control" id="District" name="District" required>
-                            <option selected disabled>Name of District</option>
-                            <option>Agar Malwa</option>
-                            <option>Alirajpur</option>
-                            <option>Anuppur</option>
-                            <option>Ashoknagar</option>
-                            <option>Balaghat</option>
-                            <option>Barwan</option>
-                            <option>Betul</option>
-                            <option>Bhind</option>
-                            <option>Bhopal</option>
-                            <option>Burhanpur</option>
-                            <option>Chhatarpur</option>
-                            <option>Chhindwara</option>
-                            <option>Damoh</option>
-                            <option>Datia</option>
-                            <option>Dewas</option>
-                            <option>Dhar</option>
-                            <option>Dindori</option>
-                            <option>East Nimar</option>
-                            <option>Guna</option>
-                            <option>Gwalior</option>
-                            <option>Harda</option>
-                            <option>Hoshangabad</option>
-                            <option>Indore</option>
-                            <option>Jabalpur</option>
-                            <option>Jhabua</option>
-                            <option>Katni</option>
-                            <option>Mandla</option>
-                            <option>Mandsaur</option>
-                            <option>Morena</option>
-                            <option>Narsinghpur</option>
-                            <option>Neemuch</option>
-                            <option>Niwari</option>
-                            <option>Panna</option>
-                            <option>Raisen</option>
-                            <option>Rajgarh</option>
-                            <option>Ratlam</option>
-                            <option>Rewa</option>
-                            <option>Sagar</option>
-                            <option>Satna</option>
-                            <option>Sehore</option>
-                            <option>Seoni</option>
-                            <option>Shahdol</option>
-                            <option>Shajapur</option>
-                            <option>Sheopur</option>
-                            <option>Shivpuri</option>
-                            <option>Sidhi</option>
-                            <option>Singrauli</option>
-                            <option>Tikamgarh</option>
-                            <option>Ujjain</option>
-                            <option>Umaria</option>
-                            <option>Vidisha</option>
-                            <option>West Nimar</option>
-                        </select>
+
+                    <div class="form-group" id="phone-div">
+                        <label for="Phone_Number">Phone Number-</label>
+                        <input type="text" name="Phone_Number" class="form-control" id="Phone_Number">
                     </div>
 
                     <div class="form-group">
-                        <label for="Pin_Code">Pin Code</label>
-                        <select class="form-control" id="Pin_Code" name="Pin_Code">
-                            <option selected disabled> select pin</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
-                            <option>1111111</option>
+                        <label for="Incident_Type">Incident Type </label>
+                        <select class="form-control" name='Incident_Type' id="Incident_Type">
+                            <option selected disabled>Select incident Type</option>
+                            <option value="accident">Accident</option>
+                            <option value="kidnapping">Kidnapping</option>
+                            <option value="fire">Fire</option>
+                            <option value="robbery">Robbery</option>
+                            <option value="health">Health Problem</option>
+                            <option value="others">Others</option>
                         </select>
+                    </div>
+                    <div class="form-group" id='calldes-div'>
+                        <label>Describe call :-</label>
+                        <textarea type="text" class="form-control" name='Describe_call' id="Describe_call" rows="3"
+                            cols="30" placeholder="Describe call here"></textarea>
                     </div>
 
                 </div>
-                <button type="submit" class="form-group col-7 btn btn-primary">Submit</button>
+
+
+
+
+                <div class="col-md">
+                    <div class="form-group" id='adress-div'>
+
+                        <div class="form-group ">
+                            <label for="Incident_Address">Incident Address :-</label>
+                            <input type="text" class="form-control" id="Incident_Address" name='Incident_Address' />
+                        </div>
+                        <div class="row">
+                            <div class="col-md form-group ">
+                                <label for="City">City</label>
+                                <input class="form-control" id="City" name="City">
+                            </div>
+                            <div class="col-md form-group ">
+                                <label for="District">District</label>
+                                <input class="form-control" id="District" name="District">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md form-group ">
+                                <label for="State">State</label>
+                                <input class="form-control" id="State" name="State">
+                            </div>
+                            <div class="col-md form-group">
+                                <label for="Country">Country</label>
+                                <input class="form-control" id="Country" name="Country">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Pin_Code">Pin Code</label>
+                            <input class="form-control" id="Pin_Code" name="Pin_Code">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="row text-center">
+                <div class="col p2">
+                    <button type="submit" class="form-group col-2 btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        let autocomplete;
+        let address1Field;
+        let postalField;
+
+        function initAutocomplete() {
+            address1Field = document.querySelector("#Incident_Address");
+            postalField = document.querySelector("#Pin_Code");
+            // Create the autocomplete object, restricting the search predictions to
+            // addresses in the US and Canada.
+            autocomplete = new google.maps.places.Autocomplete(address1Field, {
+                componentRestrictions: { country: ["in"] },
+                fields: ["address_components", "formatted_address"],
+            });
+            //address1Field.focus();
+            // When the user selects an address from the drop-down, populate the
+            // address fields in the form.
+            autocomplete.addListener("place_changed", fillInAddress);
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            const place = autocomplete.getPlace();
+            let postcode = "";
+
+            // Get each component of the address from the place details,
+            // and then fill-in the corresponding field on the form.
+            // place.address_components are google.maps.GeocoderAddressComponent objects
+            // which are documented at http://goo.gle/3l5i5Mr
+            for (const component of place.address_components) {
+                // @ts-ignore remove once typings fixed
+                const componentType = component.types[0];
+
+                switch (componentType) {
+                    case "postal_code": {
+                        postcode = `${component.long_name}${postcode}`;
+                        break;
+                    }
+
+                    case "postal_code_suffix": {
+                        postcode = `${postcode}-${component.long_name}`;
+                        break;
+                    }
+
+                    case "locality": {
+                        document.querySelector("#City").value = component.long_name;
+                        break;
+                    }
+
+                    case 'administrative_area_level_2': {
+                        document.querySelector("#District").value = component.long_name;
+                    }
+
+                    case "administrative_area_level_1": {
+                        document.querySelector("#State").value = component.short_name;
+                        break;
+                    }
+                    case "country":
+                        document.querySelector("#Country").value = component.long_name;
+                        break;
+                }
+            }
+
+            postalField.value = postcode;
+            // After filling the form with address components from the Autocomplete
+            // prediction, set cursor focus on the second address line to encourage
+            // entry of subpremise information such as apartment, unit, or floor number.
+        }
+
+        window.initAutocomplete = initAutocomplete;
+    </script>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initAutocomplete&libraries=places&v=weekly"
+        defer></script>
 </body>
 
 </html>

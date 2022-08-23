@@ -3,100 +3,102 @@
 {% load static %}
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-      <script>
-          function change(value){
-          document.getElementById("select").value= value;
-          }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script>
+    function change(value) {
+      document.getElementById("select").value = value;
+    }
 
-       </script>
-<style>
-.content {
-  max-width: 500px;
-  margin: auto;
-}
-.styled-table {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-.styled-table th,
-.styled-table td {
-    padding: 12px 15px;
-}
+  </script>
+  <style>
+    .content {
+      max-width: 500px;
+      margin: auto;
+    }
 
-</style>-
-<!--<script>-->
-<!--//can use following link to get address from lng and lat-->
-<!--   //  https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=API_KEY -->
-<!--</script>-->
-    <title>driver record</title>
+    .styled-table {
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.9em;
+      font-family: sans-serif;
+      min-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .styled-table th,
+    .styled-table td {
+      padding: 12px 15px;
+    }
+  </style>-
+  <!--<script>-->
+  <!--//can use following link to get address from lng and lat-->
+  <!--   //  https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=API_KEY -->
+  <!--</script>-->
+  <title>driver record</title>
 </head>
 
-<body >
-    <div class="bg-success ">
-        <div class="row ">
-            <div class="col-md-3 text-center ">
-                <img src="{% static 'images/100system.png' %}" width="70" height="45">
-            </div>
-            <div class="col-md-6 ">
-                <h2>Dial 100 System , Madhya Pradesh</h2>
-            </div>
-        </div>
-
+<body>
+  <div class="container-fluid">
+    <div class="row bg-success ">
+      <div class="col-md-3 text-center ">
+        <img src="{% static 'images/100system.png' %}" width="70" height="45">
+      </div>
+      <div class="col-md-6 ">
+        <h2>Dial 100 System , Madhya Pradesh</h2>
+      </div>
     </div>
-    <h2 class="text-center p-4"> User Name:{{user}}</h2>
-<div class="content row">
-<div class="border p-4 border-dark row">
-    <h3><u>Starting point</u></h3>
-<table class="styled-table  text-center" border='1'>
-  <tr>
+  </div>
+  <h2 class="text-center p-4"> User Name:{{user}}</h2>
+  <div class="content row">
+    <div class="border p-4 border-dark row">
+      <h3><u>Starting point</u></h3>
+      <table class="styled-table  text-center" border='1'>
+        <tr>
 
-    <th height="50px">LONGITUDE</th>
-    <th>LATITUDE</th>
-  </tr>
-  {% for x in driver_ll|slice:":1" %}
-    <tr>
+          <th height="50px">LONGITUDE</th>
+          <th>LATITUDE</th>
+        </tr>
+        {% for x in driver_ll|slice:":1" %}
+        <tr>
 
-      <td>{{ x.lat }}</td>
-        <td>{{ x.lng }}</td>
-    </tr>
-  {% endfor %}
-</table>
+          <td>{{ x.lat }}</td>
+          <td>{{ x.lng }}</td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
     <div class="border p-4 border-dark row">
-<h3><u>Ending location</u></h3>
-<table class="styled-table  text-center" border='1'>
-  <tr><th>s.no.</th>
-    <th height="50px">LONGITUDE</th>
-    <th>LATITUDE</th>
-  </tr>
-  {% for x in driver_ll %}
-    <tr>
-        <td> <input type="button" onclick="change({{forloop.counter}})" value="{{forloop.counter}}"></td>
-      <td>{{ x.end_lat }}</td>
-        <td>{{ x.end_lng }}</td>
-    </tr>
-  {% endfor %}
-</table>
-        </div>
-<form method="post" >
-     {% csrf_token %}
+      <h3><u>Ending location</u></h3>
+      <table class="styled-table  text-center" border='1'>
+        <tr>
+          <th>s.no.</th>
+          <th height="50px">LONGITUDE</th>
+          <th>LATITUDE</th>
+        </tr>
+        {% for x in driver_ll %}
+        <tr>
+          <td> <input type="button" onclick="change({{forloop.counter}})" value="{{forloop.counter}}"></td>
+          <td>{{ x.end_lat }}</td>
+          <td>{{ x.end_lng }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <form method="post">
+      {% csrf_token %}
 
-        <input id='select' name="i"/>
-    <button class="btn" type="submit">Submit</button>
-</form>
- </div>
+      <input id='select' name="i" />
+      <button class="btn" type="submit">Submit</button>
+    </form>
+  </div>
 </body>
+
 </html>
