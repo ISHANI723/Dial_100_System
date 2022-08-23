@@ -19,8 +19,8 @@
 
 <body>
 
-    <div class="bg-success ">
-        <div class="row ">
+    <div class="container-fluid">
+        <div class="row bg-success ">
             <div class="col-md-3 text-center ">
                 <img src="{% static 'images/100system.png' %}" width="70" height="45">
             </div>
@@ -229,7 +229,8 @@
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title text-center" id="setIncidentLocationLabel">Select a location from below list or drag the marker to the incident location</h5>
+                            <h5 class="modal-title text-center" id="setIncidentLocationLabel">Select a location from
+                                below list or drag the marker to the incident location</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -281,15 +282,18 @@
                     <label class="form-check-label" for="fireStation">Fire Station</label>
                 </div>
                 <div style="padding-bottom:10px"></div>
+                <div class="row" id="search-container">
+                <div class ="col-12">
+                <input id="pac-input" class="controls form-control" type="text" placeholder="Go To...">
+                </div>
+                </div>
 
                 <div id="map" style="height:87%"></div>
             </div>
         </div>
     </div>
     <script src="{% static 'js/maps.js' %}"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initMap&v=weekly"
-        defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initMap&libraries=places&v=weekly" defer></script>
 </body>
 
 </html>

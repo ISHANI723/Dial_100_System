@@ -3623,6 +3623,68 @@ function initMap() {
         mapId: '5c2352b8c2a4449a',
     });
 
+    // Create the search box and link it to the UI element.
+    const searchBox = new google.maps.places.SearchBox(document.getElementById("pac-input"));
+    MainMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById("search-container"));
+
+    // Bias the SearchBox results towards current map's viewport.
+    MainMap.addListener("bounds_changed", () => {
+        searchBox.setBounds(MainMap.getBounds());
+      });
+
+    let autocompleteMarkers = [];
+
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        // Clear out the old markers.
+        autocompleteMarkers.forEach((marker) => {
+            marker.setMap(null);
+        });
+        autocompleteMarkers = [];
+
+        // For each place, get the icon, name and location.
+        const bounds = new google.maps.LatLngBounds();
+
+        places.forEach((place) => {
+            if (!place.geometry || !place.geometry.location) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+
+            const icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25),
+            };
+
+            // Create a marker for each place.
+            autocompleteMarkers.push(
+                new google.maps.Marker({
+                    MainMap,
+                    icon,
+                    title: place.name,
+                    position: place.geometry.location,
+                })
+            );
+            if (place.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(place.geometry.viewport);
+              } else {
+                bounds.extend(place.geometry.location);
+              }
+            });
+            MainMap.fitBounds(bounds);
+    });
+
     geocoder = new google.maps.Geocoder();
     distanceMatrixService = new google.maps.DistanceMatrixService();
     directionsService = new google.maps.DirectionsService();
@@ -3884,8 +3946,8 @@ function distanceMatrix(element, case_id, frvType) {
                     const title = Object.keys(markerCoordinates['kolkata'][frv_type])[index + i]
                     //marker.setLabel(`${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`);
                     marker.setClickable(true);
-                    marker.setTitle(`${title}`)
-                    //marker.setTitle(`${title} \n ${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`)
+                    //marker.setTitle(`${title}`)
+                    marker.setTitle(`${title} \n ${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`)
                     googleMaps.event.clearListeners(marker, 'click');
                     marker.addListener('click', (event) => {
                         displayRoute(
@@ -3986,9 +4048,7 @@ function assignFRV(lat, lng, frvName, case_id) {
 }
 
 function buildSetLocationMap(case_id, address = '') {
-
     $('#SetLocationBtn').attr({ lat: '22.5726', lng: '88.3639', case_id: case_id })
-
     const CaseLocationMap = new googleMaps.Map(document.getElementById("caseLocationMap"), {
         zoom: 14,
         // center the map at kolkata
@@ -4075,12 +4135,13 @@ function buildSetLocationMap(case_id, address = '') {
                 lng: lng,
                 'data-bs-toggle': ''
             })
+            $("#ShowOnMap_" + case_id).text('Show on Map')
             //make ajax call to save location to database
             ajaxCall('location/case/set', 'POST', { case_id: case_id, lat: parseFloat(lat), lng: parseFloat(lng), csrfmiddlewaretoken: getCookie('csrftoken') }, (response) => {
                 if (response.status != 'OK') {
                     alert('Error while saving location on server')
                 }
-            }, ()=>{
+            }, () => {
                 alert('Error while saving location on server')
             })
         } else {
@@ -4135,7 +4196,7 @@ $("button[id^='ShowOnMap']").click(function (e) {
             } else {
                 buildSetLocationMap(case_id, address);
             }
-        }, () =>{
+        }, () => {
             buildSetLocationMap(case_id, address);
         })
     }
