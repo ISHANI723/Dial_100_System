@@ -81,10 +81,10 @@ const markerCoordinates = {
                 "lat": 22.614321312124773,
                 "lng": 88.5105116193641
             },
-            "Transparance Site Mother & Child Care Hospital": {
-                "lat": 22.593893796974626,
-                "lng": 88.46767860692115
-            },
+            // "Transparance Site Mother & Child Care Hospital": {
+            //     "lat": 22.593893796974626,
+            //     "lng": 88.46767860692115
+            // },
             "Manipal Hospital": {
                 "lat": 22.572379017209656,
                 "lng": 88.4128174015032
@@ -97,18 +97,18 @@ const markerCoordinates = {
                 "lat": 22.62073899950217,
                 "lng": 88.43288204790757
             },
-            "Daffodil Hospital (Multi-speciality Hospital)": {
-                "lat": 22.601949378199272,
-                "lng": 88.40468872320001
-            },
+            // "Daffodil Hospital (Multi-speciality Hospital)": {
+            //     "lat": 22.601949378199272,
+            //     "lng": 88.40468872320001
+            // },
             "Ruby": {
                 "lat": 22.598576940415658,
                 "lng": 88.40287426753889
             },
-            "Calcutta Heart Clinic & Hospital": {
-                "lat": 22.575701407068895,
-                "lng": 88.41822809214528
-            },
+            // "Calcutta Heart Clinic & Hospital": {
+            //     "lat": 22.575701407068895,
+            //     "lng": 88.41822809214528
+            // },
             "Fortis Hospital": {
                 "lat": 22.52211021458458,
                 "lng": 88.40085607249912
@@ -129,10 +129,10 @@ const markerCoordinates = {
                 "lat": 22.533167124549518,
                 "lng": 88.32878311702923
             },
-            "DARADIA: The Pain Clinic": {
-                "lat": 22.57986721665231,
-                "lng": 88.47676210340006
-            },
+            // "DARADIA: The Pain Clinic": {
+            //     "lat": 22.57986721665231,
+            //     "lng": 88.47676210340006
+            // },
             "Bhagirathi Neotia Womens and Child Hospital": {
                 "lat": 22.58582863696292,
                 "lng": 88.46419035318523
@@ -163,10 +163,10 @@ const markerCoordinates = {
                 "lat": 22.634414216792273,
                 "lng": 88.48489577388378
             },
-            "ACP & DCP Office Bidhannagar": {
-                "lat": 22.588575183209247,
-                "lng": 88.45192048269172
-            },
+            // "ACP & DCP Office Bidhannagar": {
+            //     "lat": 22.588575183209247,
+            //     "lng": 88.45192048269172
+            // },
             "Bidhannagar East Police Station": {
                 "lat": 22.59080236743551,
                 "lng": 88.43221332772964
@@ -269,10 +269,10 @@ const markerCoordinates = {
                 "lat": 22.490787282354574,
                 "lng": 88.1888272772061
             },
-            "West Bengal Fire & Emergency Services": {
-                "lat": 22.558776465299058,
-                "lng": 88.35472003829192
-            },
+            // "West Bengal Fire & Emergency Services": {
+            //     "lat": 22.558776465299058,
+            //     "lng": 88.35472003829192
+            // },
             "Manicktala Fire Station": {
                 "lat": 22.584308779563138,
                 "lng": 88.39169524895293
@@ -3652,7 +3652,8 @@ function initMap() {
                             height: 20,
                             width: 20,
                         },
-                    }
+                    },
+                    optimized: true,
                 });
                 markers[city][key].push(marker)
             }
@@ -3985,7 +3986,7 @@ function assignFRV(lat, lng, frvName, case_id) {
 
 function buildSetLocationMap(case_id, address = '') {
 
-    $('#SetLocationBtn').attr({ lat: '', lng: '', case_id: case_id })
+    $('#SetLocationBtn').attr({ lat: '22.5726', lng: '88.3639', case_id: case_id })
 
     const CaseLocationMap = new googleMaps.Map(document.getElementById("caseLocationMap"), {
         zoom: 14,
@@ -4043,8 +4044,8 @@ function buildSetLocationMap(case_id, address = '') {
                     </div>
                     `
                 }
-                CaseLocationMap.setCenter(results[0].geometry.location);
-                CaseLocationMarker.setPosition(results[0].geometry.location)
+                //CaseLocationMap.setCenter(results[0].geometry.location);
+                //CaseLocationMarker.setPosition(results[0].geometry.location)
                 lists.html(htmlContent)
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
