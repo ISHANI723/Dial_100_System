@@ -3901,12 +3901,11 @@ function distanceMatrix(element, case_id, frvType) {
                             <div id="siteNotice"></div>
                             <h5 id="firstHeading" class="firstHeading">${title}</h5>
                             <div id="bodyContent">
+                            <p><strong>${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}</strong></p>
                                 <button type="button" class="btn btn-success" onclick="assignFRV(${incidentLocation.lat}, ${incidentLocation.lng}, '${title}', ${case_id})">Assign FRV</button>
                             </div>
                         </div>
                       `
-
-                    //<p><strong>${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}</strong></p>
 
                     const infowindow = new google.maps.InfoWindow({
                         content: contentString,
