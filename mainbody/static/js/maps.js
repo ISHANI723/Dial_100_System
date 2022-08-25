@@ -3882,9 +3882,10 @@ function distanceMatrix(element, case_id, frvType) {
                     }
                     const marker = markers['kolkata'][frv_type][index + i];
                     const title = Object.keys(markerCoordinates['kolkata'][frv_type])[index + i]
-                    marker.setLabel(`${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`);
+                    //marker.setLabel(`${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`);
                     marker.setClickable(true);
-                    marker.setTitle(`${title} \n ${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`)
+                    marker.setTitle(`${title}`)
+                    //marker.setTitle(`${title} \n ${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}`)
                     googleMaps.event.clearListeners(marker, 'click');
                     marker.addListener('click', (event) => {
                         displayRoute(
@@ -3900,11 +3901,12 @@ function distanceMatrix(element, case_id, frvType) {
                             <div id="siteNotice"></div>
                             <h5 id="firstHeading" class="firstHeading">${title}</h5>
                             <div id="bodyContent">
-                                <p><strong>${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}</strong></p>
                                 <button type="button" class="btn btn-success" onclick="assignFRV(${incidentLocation.lat}, ${incidentLocation.lng}, '${title}', ${case_id})">Assign FRV</button>
                             </div>
                         </div>
                       `
+
+                    //<p><strong>${element.distance.text}, ${element.duration_in_traffic ? element.duration_in_traffic.text : element.duration.text}</strong></p>
 
                     const infowindow = new google.maps.InfoWindow({
                         content: contentString,
