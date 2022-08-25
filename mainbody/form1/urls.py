@@ -20,5 +20,5 @@ urlpatterns = [
     path('assignfrv', views.assign_frv, name='AssignFRV' ),
     #path('location/frv/get', views.get_frv_location, name='GetFRVocation'),
     #path('location/frv/gset', views.set_frv_location, name='SetFRVLocation'),
-
+    path('road', views.roadlayer, name='RoadLayer' ),
 ]

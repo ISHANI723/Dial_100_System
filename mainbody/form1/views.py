@@ -32,6 +32,11 @@ form2array=['hritvik','bang2','bhate2','ishani2','ritik2','prajwal2']
 Elat_list=[]
 Elng_list=[]
 
+def roadlayer(request):
+    route = Frv_Draw.objects.filter(Name='New_Town')
+    x = route[0].Cord
+    return render(request, 'roadlayer.html', {'MAPS_API_KEY':MAPS_API_KEY, 'routePoints':eval(x)})
+
 def index(request):
     if request.method == 'POST':
         post = form1Detail()
@@ -286,20 +291,19 @@ def newroad(request):
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         online=request.POST.get('online')
-        x = Frv_Draw.objects.filter(Name='user')
+        x = Frv_Draw.objects.filter(Name='New_Town')
         if lat and lng:
-            location={'lat':lat,'lng':lng}
-            result=[location,online]
-            print(location)
+            result={'lat':lat,'lng':lng, 'online': online}
             for x1 in x:
                 a=eval(x1.Cord)
-                if len(a)==0:
-                    x1.Cord = str(a)
+                if a:
+                    print(a)
+                    if (lat!=a[-1]['lat'] and lng!=a[-1]['lng'] ):
+                        a.append(result)
+                        x1.Cord=str(a)
+                        x1.save()
+                else:
+                    x1.Cord=str([{'lat':lat, 'lng':lng, 'online': online}])
                     x1.save()
-                print(lat)
-                print(lng)
-                if (lat!=a[-1][0]['lat'] and lng!=a[-1][0]['lng'] ):
-                 a.append(result)
-                 x1.Cord=str(a)
-                 x1.save()
-    return render(request,'newroot.html')
+                    
+        return JsonResponse({'status': 'OK'})
