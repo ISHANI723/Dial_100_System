@@ -10,6 +10,7 @@ urlpatterns = [
     path('menu', views.menu_view, name='menu'),
     path('login', views.login_view, name='login'),
     path('logout', views.logout_view, name='logout'),
+    path('draw',views.newroad,name='draw'),
     path('movetohistory/<int:case_id>', views.move_to_history, name='MoveToHistory'),
     path('add_frv', views.create_frv ,name='AddFrv'),
     path('driver', views.driver, name='driver'),
