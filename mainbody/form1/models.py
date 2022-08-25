@@ -61,3 +61,9 @@ class History(models.Model):
     date = models.DateField()
     lat=models.CharField(max_length=50, default='')
     lng=models.CharField(max_length=50, default='')
+
+class Frv_Draw(models.Model):
+    Cord=models.TextField()
+    Name=models.CharField(max_length=500)
+    Lat=models.TextField()
+    Lag=models.TextField()
