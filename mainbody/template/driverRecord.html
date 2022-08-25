@@ -50,12 +50,16 @@
             <div class="col-md-3 text-center ">
                 <img src="{% static 'images/100system.png' %}" width="70" height="45">
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-6  ">
                 <h2>Dial 100 System , Madhya Pradesh</h2>
             </div>
+             <div class="col-md-3 ">
+        <h2><a style="text-decoration: none;" href="/logout">logout</a></h2>
+    </div>
         </div>
 
     </div>
+
     <h2 class="text-center p-4"> User Name:{{user}}</h2>
 <div class="content row">
 <div class="border p-4 border-dark row">
@@ -65,34 +69,39 @@
 
     <th height="50px">LONGITUDE</th>
     <th>LATITUDE</th>
+      <th>case id</th>
   </tr>
   {% for x in driver_ll|slice:":1" %}
     <tr>
 
       <td>{{ x.lat }}</td>
         <td>{{ x.lng }}</td>
+        <td>{{x.case_id}}</td>
     </tr>
   {% endfor %}
 </table>
     </div>
+    <form method="post" >
+     {% csrf_token %}
     <div class="border p-4 border-dark row">
 <h3><u>Ending location</u></h3>
 <table class="styled-table  text-center" border='1'>
   <tr><th>s.no.</th>
     <th height="50px">LONGITUDE</th>
     <th>LATITUDE</th>
+      <th>case id</th>
   </tr>
   {% for x in driver_ll %}
     <tr>
-        <td> <input type="button" onclick="change({{forloop.counter}})" value="{{forloop.counter}}"></td>
+        <td> <input type="submit" onclick="change({{x.case_id}})" value="{{forloop.counter}}"></td>
       <td>{{ x.end_lat }}</td>
         <td>{{ x.end_lng }}</td>
+        <td>{{x.case_id}}</td>
     </tr>
   {% endfor %}
 </table>
         </div>
-<form method="post" >
-     {% csrf_token %}
+
 
         <input id='select' name="i"/>
     <button class="btn" type="submit">Submit</button>
