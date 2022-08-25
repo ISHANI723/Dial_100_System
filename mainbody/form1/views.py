@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from datetime import datetime
-from .models import form1Detail, Operations, History, FRV, FRV_Assigned
+from .models import form1Detail, Operations, History, FRV, FRV_Assigned ,Frv_Draw
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from dotenv import load_dotenv, find_dotenv
@@ -277,3 +277,29 @@ def logout_view(request):
 
 def menu_view(request):
     return render(request,'menu.html')
+
+
+#[[{lst,},true1|false], +]
+
+def newroad(request):
+    if request.method == 'POST':
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        online=request.POST.get('online')
+        x = Frv_Draw.objects.filter(Name='user')
+        if lat and lng:
+            location={'lat':lat,'lng':lng}
+            result=[location,online]
+            print(location)
+            for x1 in x:
+                a=eval(x1.Cord)
+                if len(a)==0:
+                    x1.Cord = str(a)
+                    x1.save()
+                print(lat)
+                print(lng)
+                if (lat!=a[-1][0]['lat'] and lng!=a[-1][0]['lng'] ):
+                 a.append(result)
+                 x1.Cord=str(a)
+                 x1.save()
+    return render(request,'newroot.html')
