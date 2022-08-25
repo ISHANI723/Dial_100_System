@@ -56,44 +56,48 @@
       </div>
     </div>
   </div>
-  <h2 class="text-center p-4"> User Name:{{user}}</h2>
-  <div class="content row">
-    <div class="border p-4 border-dark row">
-      <h3><u>Starting point</u></h3>
-      <table class="styled-table  text-center" border='1'>
-        <tr>
+    <h2 class="text-center p-4"> User Name:{{user}}</h2>
+<div class="content row">
+<div class="border p-4 border-dark row">
+    <h3><u>Starting point</u></h3>
+<table class="styled-table  text-center" border='1'>
+  <tr>
 
-          <th height="50px">LONGITUDE</th>
-          <th>LATITUDE</th>
-        </tr>
-        {% for x in driver_ll|slice:":1" %}
-        <tr>
+    <th height="50px">LONGITUDE</th>
+    <th>LATITUDE</th>
+      <th>case id</th>
+  </tr>
+  {% for x in driver_ll|slice:":1" %}
+    <tr>
 
-          <td>{{ x.lat }}</td>
-          <td>{{ x.lng }}</td>
-        </tr>
-        {% endfor %}
-      </table>
+      <td>{{ x.lat }}</td>
+        <td>{{ x.lng }}</td>
+        <td>{{x.case_id}}</td>
+    </tr>
+  {% endfor %}
+</table>
     </div>
+    <form method="post" >
+     {% csrf_token %}
     <div class="border p-4 border-dark row">
-      <h3><u>Ending location</u></h3>
-      <table class="styled-table  text-center" border='1'>
-        <tr>
-          <th>s.no.</th>
-          <th height="50px">LONGITUDE</th>
-          <th>LATITUDE</th>
-        </tr>
-        {% for x in driver_ll %}
-        <tr>
-          <td> <input type="button" onclick="change({{forloop.counter}})" value="{{forloop.counter}}"></td>
-          <td>{{ x.end_lat }}</td>
-          <td>{{ x.end_lng }}</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-    <form method="post">
-      {% csrf_token %}
+
+<h3><u>Ending location</u></h3>
+<table class="styled-table  text-center" border='1'>
+  <tr><th>s.no.</th>
+    <th height="50px">LONGITUDE</th>
+    <th>LATITUDE</th>
+      <th>case id</th>
+  </tr>
+  {% for x in driver_ll %}
+    <tr>
+        <td> <input type="submit" onclick="change({{x.case_id}})" value="{{forloop.counter}}"></td>
+      <td>{{ x.end_lat }}</td>
+        <td>{{ x.end_lng }}</td>
+        <td>{{x.case_id}}</td>
+    </tr>
+  {% endfor %}
+</table>
+        </div>
 
       <input id='select' name="i" />
       <button class="btn" type="submit">Submit</button>

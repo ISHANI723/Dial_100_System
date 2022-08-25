@@ -24,8 +24,9 @@ $(document).ready(function(){
       $('.menu').toggle("slide");
     });
 });
-</script>
 
+
+</script>
     <style>#myDIV{
       width: 100px;
   height:100px;
@@ -40,7 +41,10 @@ $(document).ready(function(){
         height: 100%;
     }
 </style>
-<body onload="myfunction()">
+<body  onload="getLocationUpdate()">
+<!--        onload="getLocation()">-->
+<!--    onload="interval">   -->
+<!--"myfunction()">-->
 
     <div>
         <div class="row">
@@ -48,24 +52,35 @@ $(document).ready(function(){
                         <img src="{% static 'images/logofull.png' %}" width="40%" height="55">
 
                  </div>
- <form method="post" class="col">
-{% csrf_token %}
+<button name="start" id="new" class="btn col"><img height="50" width="50" class="plus" id='openend'    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGuVSj-CvXJ47tW1_A4IUBt_BHi8OyA1t-FQ&usqp=CAU"></button>
+<form method="post" >
+            {% csrf_token %}
+ <button name="status" id="end" value="end" type="submit" style="display:none;"  class="btn"><img height="50" width="50" class="plus" id='start'  src="https://thumbs.dreamstime.com/b/rejected-button-8933160.jpg"></button>
+   </form>
 
- <button name="status" id="status" value="end" type="submit"  class="btn"><img height="50" width="50" class="plus" id='start' onclick=changeImg()   src="https://thumbs.dreamstime.com/b/rejected-button-8933160.jpg"></button>
-</form>
         </div>
     </div>
 
 <div id="map">
 </div>
 <script type="text/javascript">
+function getCookie(key) {
+    var cookies = document.cookie;
+    var value = cookies.split(key + '=');
+    if (value.length > 1) {
+        return value[1].split(';')[0]
 
-//find starting co-ordinate from json file kolkate_poloce_station start
+    }
+}
 
+var services;
+var display;
+var end;
+var route;
 
 //find starting co-ordinate from json file kolkate_poloce_station end
 //followind code is  to map
-    function myfunction(){
+    function myfunction(start_lat,start_lng){
         var station_name='{{user}}'
         var start_lat=parseFloat('{{Slat}}')
         var start_lng=parseFloat('{{Slng}}')
@@ -76,30 +91,130 @@ $(document).ready(function(){
         //console.log(Elng)
         var map;
         var start = new google.maps.LatLng(start_lat,start_lng);
-        var end = new google.maps.LatLng(Elat,Elng);
+        end = new google.maps.LatLng(Elat,Elng);
         var option ={
             zoom : 10,
             center : start,
             streetViewControl: false,
              scaleControl: true,
         };
+            markerA = new google.maps.Marker({
+      position: start_lat,
+      title: "point A",
+      label: "A",
+      map: map
+    })
         map = new google.maps.Map(document.getElementById('map'),option);
-        var display = new google.maps.DirectionsRenderer();
-        var services = new google.maps.DirectionsService();
+        display = new google.maps.DirectionsRenderer();
+        services = new google.maps.DirectionsService();
         display.setMap(map);
+
+        buildRoute(start_lat, start_lng)
+    }
+
+  $("#new").click(function() {
+    $.ajax({
+      type: "POST",
+      url: "/driver",
+      data: {
+        status: "started",
+        csrfmiddlewaretoken: getCookie('csrftoken')
+      },
+      success: (response) => {
+        if (response.status == 'OK') console.log('frv journey started')
+      }
+      });
+    let x = $(this)
+    x.hide()
+    var y=document.getElementById("end");
+   y.style.display = "block";
+      }
+      );
+/*========================================================================*/
+  //finding current location of driver this is calling myfunction i.e. map repeatedly
+
+        var watchID;
+        var geoLoc;
+
+        function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+             //myfunction(latitude,longitude)
+             buildRoute(latitude,longitude)
+             ajaxfunction(latitude,longitude)
+
+        }
+
+        function errorHandler(err) {
+            if (err.code == 1) {
+                alert("Error: Access is denied!");
+            } else if (err.code == 2) {
+                alert("Error: Position is unavailable!");
+            }
+        }
+
+        function getLocationUpdate() {
+
+            if (navigator.geolocation) {
+
+                // timeout at 60000 milliseconds (60 seconds)
+                var options = { timeout: 60000 };
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+            } else {
+                alert("Sorry, browser does not support geolocation!");
+            }
+        }
+/*========================================================================*/
+function ajaxfunction(lat,lng){
+    console.log(lat);
+    console.log(lng);
+    $.ajax({
+      type: "POST",
+      url: "/driver",
+      data: {
+        lat: lat,
+        lng:lng,
+        csrfmiddlewaretoken: getCookie('csrftoken')
+      },
+      success: (response) => {
+        if (response.status == 'OK') console.log('frv journey started')
+      }
+      });
+}
+
+/*========================================================================*/
+
+
+//finding current location of driver
+   //         function getLocation() {
+     //       if (navigator.geolocation) {
+     //           navigator.geolocation.getCurrentPosition(showPosition);
+      //      } else {
+       //         x.innerHTML = "none";
+        //    }
+        //function showPosition(position) {
+       //       var start_lat= position.coords.latitude
+        //         var start_lng=position.coords.longitude
+         //          myfunction(start_lat,start_lng)
+      //  }
+       // }
+//find starting co-ordinate from json file kolkate_poloce_station start
+
+    function buildRoute(lat, lng){
             var request ={
-                origin : start,
-                destination:end,
-                travelMode: 'DRIVING'
-            };
-            services.route(request,function(result,status){
-                if(status =='OK'){
-                    display.setDirections(result);
-                }
-            });
+            origin : {lat: lat, lng: lng},
+            destination:end,
+            travelMode: 'DRIVING'
+        };
+        services.route(request,function(result,status){
+            if(status =='OK'){
+                display.setDirections(result);
+            }
+        });
     }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&libraries=places&callback=myfunction"></script>
 
 <div class="d-grid gap-2 d-md-block text-center">
     <div class="menu col" style="display: none;">

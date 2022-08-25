@@ -31,6 +31,7 @@ form2array = ['hritvik', 'bang2', 'bhate2', 'ishani2', 'ritik2', 'prajwal2']
 
 Elat_list = []
 Elng_list = []
+E_dict={}
 
 
 def roadlayer(request):
@@ -203,6 +204,10 @@ def driver(request):
     global user
     user = str(user)
     driver_ll = FRV_Assigned.objects.filter(Driver_Name=user)
+    if not user:
+        return redirect('/login')
+
+    driver_ll=FRV_Assigned.objects.filter(Driver_Name=user)
     global Slat
     global Slng
     global type
@@ -210,28 +215,41 @@ def driver(request):
     global Elng
     global Elat_list
     global Elng_list
-    global status
-    status = 'not started'
+    global E_dict
+    global  status
+    status='not started'
     user = user.replace("_", " ")
 
     for s in driver_ll:
-        Slat = s.lat
-        Slng = s.lng
-        type = s.FRV_Type
+        Slat=s.lat
+        Slng=s.lng
+        type =s.FRV_Type
+        E_dict[s.case_id]=[s.end_lat,s.end_lng]
         Elat_list.append(s.end_lat)
         Elng_list.append(s.end_lng)
 
-    if request.method == "POST":
-        ends = request.POST.get('status')
-        if ends == 'end':
+    if request.method=="POST":
+        status=request.POST.get('status')
+        lat=request.POST.get('lat')
+        lng=request.POST.get('lng')
+        if lat and lng:
+            user = user.replace(" ", "_")
+            frvl=FRV.objects.filter(Driver_Name=user)
+            frvl.update(lat=lat)
+            frvl.update(lng=lng)
+        if status:
+            print(status)
             user = user.replace(" ", "_")
             x = FRV_Assigned.objects.filter(Driver_Name=user)
-            x.filter(end_lat=Elat).update(status='ended')
-            return render(request, 'driverRecord.html', {'user': user, 'driver_ll': driver_ll})
-        ite = request.POST.get("i")
-        ite = int(ite) - 1
-        Elat = Elat_list[ite]
-        Elng = Elng_list[ite]
+            x.filter(end_lat=Elat).update(status=status)
+            if status=='end':
+                return render(request, 'driverRecord.html', {'user': user, 'driver_ll': driver_ll})
+
+            else:
+                return JsonResponse({'status': 'OK'})
+        ite=request.POST.get("i")
+        Elat = E_dict[ite][0]
+        Elng = E_dict[ite][1]
         user = user.replace(" ", "_")
         x = FRV_Assigned.objects.filter(Driver_Name=user)
         x.filter(end_lat=Elat).update(status='assigned')
@@ -283,9 +301,8 @@ def login_view(request):
 
 
 def logout_view(request):
-    if request.method == 'POST':
         logout(request)
-        return render(request, "login.html")
+        return redirect('login')
 
 
 def menu_view(request):
