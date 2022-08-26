@@ -283,17 +283,47 @@
                 </div>
                 <div style="padding-bottom:10px"></div>
                 <div class="row" id="search-container">
-                <div class ="col-12">
-                <input id="pac-input" class="controls form-control" type="text" placeholder="Go To...">
-                </div>
+                    <div class="col-12">
+                        <input id="pac-input" class="controls form-control" type="text" placeholder="Go To...">
+                    </div>
                 </div>
 
                 <div id="map" style="height:87%"></div>
             </div>
         </div>
-    </div>
-    <script src="{% static 'js/maps.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initMap&libraries=places&v=weekly" defer></script>
+        <div class="row">
+
+            <!-- <div class="text-center">
+                <button type="button" class="btn btn-demo" data-toggle="modal" data-target="#myModal">
+                    Left Sidebar Modal
+                </button>
+            </div> -->
+
+            <!-- Modal -->
+            <div class="modal left fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Left Sidebar</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>In here
+                            </p>
+                        </div>
+
+                    </div><!-- modal-content -->
+                </div><!-- modal-dialog -->
+            </div><!-- modal -->
+
+        </div>
+        <script src="{% static 'js/maps.js' %}"></script>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key={{MAPS_API_KEY}}&callback=initMap&libraries=places&v=weekly"
+            defer></script>
 </body>
 
 </html>

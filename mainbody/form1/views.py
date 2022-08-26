@@ -36,7 +36,7 @@ Elng_list = []
 def roadlayer(request):
     route = Frv_Draw.objects.filter(Name='New_Town')
     x = route[0].Cord
-    return render(request, 'roadlayer.html', {'MAPS_API_KEY':MAPS_API_KEY, 'routePoints':eval(x)})
+    return render(request, 'roadlayer.html', {'MAPS_API_KEY':MAPS_API_KEY, 'routePoints': eval(x)})
 
 def index(request):
     if request.method == 'POST':
@@ -315,3 +315,4 @@ def newroad(request):
                     x1.save()
                     
         return JsonResponse({'status': 'OK'})
+    return render(request,'newroot.html')
