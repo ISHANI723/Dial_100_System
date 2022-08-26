@@ -3630,7 +3630,7 @@ function initMap() {
     // Bias the SearchBox results towards current map's viewport.
     MainMap.addListener("bounds_changed", () => {
         searchBox.setBounds(MainMap.getBounds());
-      });
+    });
 
     let autocompleteMarkers = [];
 
@@ -3678,11 +3678,11 @@ function initMap() {
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
                 bounds.union(place.geometry.viewport);
-              } else {
+            } else {
                 bounds.extend(place.geometry.location);
-              }
-            });
-            MainMap.fitBounds(bounds);
+            }
+        });
+        MainMap.fitBounds(bounds);
     });
 
     geocoder = new google.maps.Geocoder();
@@ -3829,6 +3829,29 @@ function initMap() {
             }
         });
     }
+
+    //draw circle
+    // Add the circle for this city to the map.
+
+    for (const [city, coordinates] of Object.entries(markerCoordinates)) {
+        for (const [key, value] of Object.entries(coordinates)) {
+            if (key == 'policeStation') {
+                for (const [name, latLng] of Object.entries(value)) {
+                    console.log(key, value);
+                    const cityCircle = new google.maps.Circle({
+                        strokeColor: "#000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#000",
+                        fillOpacity: 0.35,
+                        map: MainMap,
+                        center: latLng,
+                        radius: 700,
+                    });
+                }
+            }
+        }
+    };
 }
 
 function displayRoute(origin, destination, service, display) {

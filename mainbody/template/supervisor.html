@@ -302,20 +302,28 @@
                     <button class="btn btn-primary">Map</button>
                 </div>
                 <div class="row">
-                <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="hospitalToggle"
-                        onclick="hideMarker(this, 'hospital')" checked>
-                    <label class="form-check-label" for="hospital">Hospital</label>
-                </div>
-                <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="policeStationToggle"
-                        onclick="hideMarker(this, 'policeStation')" checked>
-                    <label class="form-check-label" for="policeStation">Police Station</label>
-                </div>
-                <div class="form-check form-switch form-check-inline">
-                    <input class="form-check-input" type="checkbox" role="switch" id="fireStationToggle"
-                        onclick="hideMarker(this, 'fireStation')" checked>
-                    <label class="form-check-label" for="fireStation">Fire Station</label>
+                    <div class="col-9">
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox" role="switch" id="hospitalToggle"
+                                onclick="hideMarker(this, 'hospital')" checked>
+                            <label class="form-check-label" for="hospital">Hospital</label>
+                        </div>
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox" role="switch" id="policeStationToggle"
+                                onclick="hideMarker(this, 'policeStation')" checked>
+                            <label class="form-check-label" for="policeStation">Police Station</label>
+                        </div>
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox" role="switch" id="fireStationToggle"
+                                onclick="hideMarker(this, 'fireStation')" checked>
+                            <label class="form-check-label" for="fireStation">Fire Station</label>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="">
+                            <a type="button" class="btn btn-primary" target='_newtab' href="/road">Updated Map</a>
+                        </div>
+                    </div>
                 </div>
                 <div style="padding-bottom:10px"></div>
                 <div class="row" id="search-container">
