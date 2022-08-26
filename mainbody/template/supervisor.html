@@ -165,6 +165,12 @@
                                                 <li><span class="list-group-item">Name: {{frv.Driver_Name}}</span></li>
                                                 <li><span class="list-group-item">Vehicle Type: {{frv.FRV_Type}}</span>
                                                 </li>
+                                                <li class="text-center">
+                                                    <button type="button" class="btn btn-info btn-demo"
+                                                        data-bs-toggle="modal" data-bs-target="#dashCam">
+                                                        Dash Camera
+                                                    </button>
+                                                </li>
                                             </ul>
                                         </li>
                                         {% endfor %}
@@ -262,10 +268,40 @@
                     $(this).tab('show');
                 })
             </script>
+
+            <div class="modal fade" id="dashCam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="dashCamLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center" id="dashCamLabel">Dash Camera</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <span style="border: 1px solid black; ">
+                                        <div id="video_pane"
+                                            style="margin: auto; border: 1px solid black; display: table;">
+
+                                            <img style="height:400px;" id="browser_video" class="" alt="video"
+                                                src="http://192.168.3.146:8080/video">
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-8">
                 <div class="row mapTabHeader">
                     <button class="btn btn-primary">Map</button>
                 </div>
+                <div class="row">
                 <div class="form-check form-switch form-check-inline">
                     <input class="form-check-input" type="checkbox" role="switch" id="hospitalToggle"
                         onclick="hideMarker(this, 'hospital')" checked>
@@ -299,25 +335,6 @@
                 </button>
             </div> -->
 
-            <!-- Modal -->
-            <div class="modal left fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Left Sidebar</h4>
-                        </div>
-
-                        <div class="modal-body">
-                            <p>In here
-                            </p>
-                        </div>
-
-                    </div><!-- modal-content -->
-                </div><!-- modal-dialog -->
-            </div><!-- modal -->
 
         </div>
         <script src="{% static 'js/maps.js' %}"></script>
