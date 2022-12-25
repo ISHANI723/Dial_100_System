@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os.path
 from pathlib import Path
-import dj_database_url
+#import dj_database_url
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -29,10 +29,10 @@ SECRET_KEY = 'django-insecure-4%_u=dk0id4o7f3m=7#l37h2pg+lvp581ps-6w9@d7ddry3ld6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['quantumgis.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['quantumgis.hrutvik.cf', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://quantumgis.herokuapp.com'
+    'https://quantumgis.hrutvik.cf'
 ]
 # Application definition
 
@@ -82,7 +82,15 @@ WSGI_APPLICATION = 'mainbody.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=60)
+#    'default': dj_database_url.config(conn_max_age=60)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'quantum_gis',
+        'USER': 'hrutvik',
+        'PASSWORD': 'hrutvik',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
 }
 
 
